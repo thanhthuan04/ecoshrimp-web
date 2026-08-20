@@ -1,0 +1,57 @@
+"use client";
+
+import { useState } from "react";
+import type { Settings, SettingsUpdate } from "@/types/settings";
+
+interface ThresholdFormProps {
+    settings: Settings;
+    onSave: (update: SettingsUpdate) => void;
+}
+
+const FIELDS: { key: keyof Settings; label: string; unit: string }[] = [
+    { key: "do_danger", label: "Ngưỡng DO nguy hiểm", unit: "mg/L" },
+    { key: "temp_min", label: "Nhiệt độ tối thiểu", unit: "°C" },
+    { key: "temp_max", label: "Nhiệt độ tối đa", unit: "°C" },
+    { key: "ph_min", label: "pH tối thiểu", unit: "" },
+    { key: "ph_max", label: "pH tối đa", unit: "" },
+    { key: "turbidity_min", label: "Độ đục tối thiểu", unit: "NTU" },
+    { key: "turbidity_max", label: "Độ đục tối đa", unit: "NTU" },
+];
+
+export default function ThresholdForm({ settings, onSave }: ThresholdFormProps) {
+    const [form, setForm] = useState<Settings>(settings);
+
+    function handleChange(key: keyof Settings, value: number) {
+        setForm((prev) => ({ ...prev, [key]: value }));
+    }
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        onSave(form);
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-lg font-bold">Ngưỡng cảnh báo</h2>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {FIELDS.map((field) => (
+                    <label key={field.key} className="flex flex-col gap-1 text-sm text-slate-600">
+                        {field.label} {field.unit && `(${field.unit})`}
+                        <input
+                            type="number"
+                            step="0.1"
+                            value={form[field.key] as number}
+                            onChange={(e) => handleChange(field.key, Number(e.target.value))}
+                            className="rounded-lg border border-slate-200 px-3 py-2"
+                        />
+                    </label>
+                ))}
+            </div>
+
+            <button type="submit" className="mt-6 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white">
+                Lưu cấu hình
+            </button>
+        </form>
+    );
+}
