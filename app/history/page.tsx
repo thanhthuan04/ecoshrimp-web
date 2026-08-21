@@ -11,6 +11,7 @@ import {
     YAxis,
 } from "recharts";
 import ChartTabs from "@/components/history/ChartTabs";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { HistoryPoint, HistoryRange } from "@/types/history";
 
 const MOCK_HISTORY: HistoryPoint[] = [
@@ -23,12 +24,23 @@ const MOCK_HISTORY: HistoryPoint[] = [
 
 export default function HistoryPage() {
     const [range, setRange] = useState<HistoryRange>("day");
+    const [date, setDate] = useState<string>(() => new Date().toISOString().slice(0, 10));
+    const { t } = useLanguage();
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Lịch sử dữ liệu</h1>
-                <ChartTabs active={range} onChange={setRange} />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <h1 className="text-2xl font-bold">{t.history.title}</h1>
+                <div className="flex items-center gap-3">
+                    <input
+                        type="date"
+                        value={date}
+                        max={new Date().toISOString().slice(0, 10)}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    />
+                    <ChartTabs active={range} onChange={setRange} />
+                </div>
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">
@@ -38,9 +50,9 @@ export default function HistoryPage() {
                         <XAxis dataKey="timestamp" stroke="#94a3b8" fontSize={12} />
                         <YAxis stroke="#94a3b8" fontSize={12} />
                         <Tooltip />
-                        <Line type="monotone" dataKey="avg_temp" stroke="#fb923c" name="Nhiệt độ (°C)" strokeWidth={2} />
-                        <Line type="monotone" dataKey="avg_do" stroke="#22c55e" name="DO (mg/L)" strokeWidth={2} />
-                        <Line type="monotone" dataKey="avg_ph" stroke="#93c5fd" name="pH" strokeWidth={2} />
+                        <Line type="monotone" dataKey="avg_temp" stroke="#fb923c" name={t.history.tempLegend} strokeWidth={2} />
+                        <Line type="monotone" dataKey="avg_do" stroke="#22c55e" name={t.history.doLegend} strokeWidth={2} />
+                        <Line type="monotone" dataKey="avg_ph" stroke="#93c5fd" name={t.history.phLegend} strokeWidth={2} />
                     </LineChart>
                 </ResponsiveContainer>
             </div>

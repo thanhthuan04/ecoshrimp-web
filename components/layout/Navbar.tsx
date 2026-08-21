@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { useState } from "react";
-
-const NAV_LINKS = [
-    { href: "/", label: "Tổng quan" },
-    { href: "/history", label: "Lịch sử" },
-    { href: "/settings", label: "Cấu hình" },
-];
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { t } = useLanguage();
+
+    const navLinks = [
+        { href: "/", label: t.nav.dashboard },
+        { href: "/history", label: t.nav.history },
+        { href: "/settings", label: t.nav.settings },
+    ];
 
     return (
         <header className="border-b border-slate-200 bg-white">
@@ -20,7 +23,7 @@ export default function Navbar() {
                 </Link>
 
                 <nav className="hidden gap-6 md:flex">
-                    {NAV_LINKS.map((link) => (
+                    {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
@@ -30,6 +33,10 @@ export default function Navbar() {
                         </Link>
                     ))}
                 </nav>
+
+                <div className="hidden items-center gap-3 md:flex">
+                    <LanguageSwitcher />
+                </div>
 
                 <button
                     type="button"
@@ -43,11 +50,12 @@ export default function Navbar() {
 
             {isMenuOpen && (
                 <nav className="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 md:hidden">
-                    {NAV_LINKS.map((link) => (
+                    {navLinks.map((link) => (
                         <Link key={link.href} href={link.href} className="text-sm font-medium text-slate-600">
                             {link.label}
                         </Link>
                     ))}
+                    <LanguageSwitcher />
                 </nav>
             )}
         </header>
