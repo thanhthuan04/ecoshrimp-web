@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import AutomationForm from "@/components/settings/AutomationForm";
 import ThresholdForm from "@/components/settings/ThresholdForm";
 import TimerForm from "@/components/settings/TimerForm";
 import type { Settings, SettingsUpdate } from "@/types/settings";
 
 const MOCK_SETTINGS: Settings = {
+    system_mode: "manual",
     do_danger: 4.0,
     ai_early_warning: 30,
     temp_max: 35.0,
@@ -35,6 +37,7 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-6">
             <h1 className="text-2xl font-bold">Cấu hình hệ thống</h1>
             <ThresholdForm settings={settings} onSave={handleSave} />
+            <AutomationForm settings={settings} onSave={handleSave} />
             <TimerForm settings={settings} onSave={handleSave} />
         </div>
     );

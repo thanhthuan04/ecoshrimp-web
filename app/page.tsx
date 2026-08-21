@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeviceControl from "@/components/control/DeviceControl";
+import SystemModeToggle from "@/components/control/SystemModeToggle";
 import RealtimeCard from "@/components/dashboard/RealtimeCard";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import Toast from "@/components/dashboard/Toast";
 import { useToast } from "@/hooks/useToast";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import type { SystemMode } from "@/types/settings";
 
 const THRESHOLDS = {
   do_danger: 4.0,
@@ -21,6 +23,7 @@ export default function DashboardPage() {
   const { data, status } = useWebSocket();
   const { toasts, showToast } = useToast();
   const lastAlertedTimestamp = useRef<string | null>(null);
+  const [systemMode, setSystemMode] = useState<SystemMode>("manual");
 
   useEffect(() => {
     if (!data || data.timestamp === lastAlertedTimestamp.current) return;
@@ -41,7 +44,10 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Tổng quan ao nuôi</h1>
-        <StatusBadge status={status} />
+        <div className="flex items-center gap-3">
+          <SystemModeToggle mode={systemMode} onModeChange={setSystemMode} />
+          <StatusBadge status={status} />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -72,10 +78,10 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <DeviceControl device="aerator" label="Máy sục khí" />
-        <DeviceControl device="pump_in" label="Bơm nước vào" />
-        <DeviceControl device="pump_out" label="Bơm nước ra" />
-        <DeviceControl device="light" label="Đèn" />
+        <DeviceControl device="aerator" label="Máy sục khí" isAutoMode={systemMode === "auto"} />
+        <DeviceControl device="pump_in" label="Bơm nước vào" isAutoMode={systemMode === "auto"} />
+        <DeviceControl device="pump_out" label="Bơm nước ra" isAutoMode={systemMode === "auto"} />
+        <DeviceControl device="light" label="Đèn" isAutoMode={systemMode === "auto"} />
       </div>
 
       <Toast toasts={toasts} />
