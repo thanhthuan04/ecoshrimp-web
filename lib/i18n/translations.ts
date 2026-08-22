@@ -3,6 +3,11 @@ export type Language = "vi" | "en";
 export const translations = {
     vi: {
         nav: { dashboard: "Tổng quan", history: "Lịch sử", settings: "Cấu hình" },
+        status: {
+            online: "Đang kết nối",
+            connecting: "Đang kết nối lại...",
+            offline: "Mất kết nối",
+        },
         dashboard: {
             title: "Tổng quan ao nuôi",
             trend: "Xu hướng gần đây",
@@ -61,6 +66,11 @@ export const translations = {
     },
     en: {
         nav: { dashboard: "Overview", history: "History", settings: "Settings" },
+        status: {
+            online: "Connected",
+            connecting: "Reconnecting...",
+            offline: "Disconnected",
+        },
         dashboard: {
             title: "Pond Overview",
             trend: "Recent trend",

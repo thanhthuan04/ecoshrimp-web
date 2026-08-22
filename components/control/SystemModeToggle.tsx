@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Hand, Sparkles } from "lucide-react";
 import { apiClient } from "@/lib/apiClient";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { SystemMode } from "@/types/settings";
 
 interface SystemModeToggleProps {
@@ -11,6 +13,7 @@ interface SystemModeToggleProps {
 
 export default function SystemModeToggle({ mode, onModeChange }: SystemModeToggleProps) {
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useLanguage();
 
     async function switchMode(nextMode: SystemMode) {
         if (nextMode === mode || isLoading) return;
@@ -31,19 +34,21 @@ export default function SystemModeToggle({ mode, onModeChange }: SystemModeToggl
                 type="button"
                 onClick={() => switchMode("manual")}
                 disabled={isLoading}
-                className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "manual" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
+                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "manual" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
                     }`}
             >
-                Thủ công
+                <Hand className="h-4 w-4" />
+                {t.dashboard.modeManual}
             </button>
             <button
                 type="button"
                 onClick={() => switchMode("auto")}
                 disabled={isLoading}
-                className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "auto" ? "bg-emerald-500 text-white shadow-sm" : "text-slate-500"
+                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "auto" ? "bg-emerald-500 text-white shadow-sm" : "text-slate-500"
                     }`}
             >
-                Tự động (AI)
+                <Sparkles className="h-4 w-4" />
+                {t.dashboard.modeAuto}
             </button>
         </div>
     );

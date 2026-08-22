@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -44,7 +45,7 @@ export default function Navbar() {
                     onClick={() => setIsMenuOpen((prev) => !prev)}
                     aria-label="Mở menu"
                 >
-                    ☰
+                    {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
             </div>
 

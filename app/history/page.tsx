@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Calendar } from "lucide-react";
 import {
     CartesianGrid,
     Line,
@@ -32,13 +33,16 @@ export default function HistoryPage() {
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <h1 className="text-2xl font-bold">{t.history.title}</h1>
                 <div className="flex items-center gap-3">
-                    <input
-                        type="date"
-                        value={date}
-                        max={new Date().toISOString().slice(0, 10)}
-                        onChange={(e) => setDate(e.target.value)}
-                        className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
-                    />
+                    <div className="relative">
+                        <Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                        <input
+                            type="date"
+                            value={date}
+                            max={new Date().toISOString().slice(0, 10)}
+                            onChange={(e) => setDate(e.target.value)}
+                            className="rounded-lg border border-slate-200 py-1.5 pl-9 pr-3 text-sm"
+                        />
+                    </div>
                     <ChartTabs active={range} onChange={setRange} />
                 </div>
             </div>
