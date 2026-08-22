@@ -8,6 +8,10 @@ export const translations = {
             connecting: "Đang kết nối lại...",
             offline: "Mất kết nối",
         },
+        common: {
+            loading: "Đang tải...",
+            loadError: "Không tải được dữ liệu, thử tải lại trang.",
+        },
         dashboard: {
             title: "Tổng quan ao nuôi",
             trend: "Xu hướng gần đây",
@@ -70,6 +74,10 @@ export const translations = {
             online: "Connected",
             connecting: "Reconnecting...",
             offline: "Disconnected",
+        },
+        common: {
+            loading: "Loading...",
+            loadError: "Failed to load data, please refresh the page.",
         },
         dashboard: {
             title: "Pond Overview",

@@ -10,46 +10,51 @@ import Toast from "@/components/dashboard/Toast";
 import WaterLevelCard from "@/components/dashboard/WaterLevelCard";
 import { useToast } from "@/hooks/useToast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { apiClient } from "@/lib/apiClient";
 import { useWebSocket } from "@/hooks/useWebSocket";
-import type { SystemMode } from "@/types/settings";
-
-const THRESHOLDS = {
-  do_danger: 4.0,
-  temp_min: 22.0,
-  temp_max: 35.0,
-  ph_min: 6.5,
-  ph_max: 9.0,
-  turbidity_max: 70.0,
-};
+import type { Settings, SystemMode } from "@/types/settings";
 
 export default function DashboardPage() {
   const { data, status } = useWebSocket();
   const { toasts, showToast } = useToast();
   const { t } = useLanguage();
   const lastAlertedTimestamp = useRef<string | null>(null);
-  const [systemMode, setSystemMode] = useState<SystemMode>("manual");
+  const [settings, setSettings] = useState<Settings | null>(null);
 
   useEffect(() => {
-    if (!data || data.timestamp === lastAlertedTimestamp.current) return;
+    apiClient
+      .get<Settings>("/api/settings")
+      .then(setSettings)
+      .catch((error) => console.error("Không tải được cấu hình ngưỡng:", error));
+  }, []);
+
+  function handleModeChange(mode: SystemMode) {
+    setSettings((prev) => (prev ? { ...prev, system_mode: mode } : prev));
+  }
+
+  useEffect(() => {
+    if (!data || !settings || data.timestamp === lastAlertedTimestamp.current) return;
     lastAlertedTimestamp.current = data.timestamp;
 
-    if (data.do < THRESHOLDS.do_danger) {
+    if (data.do < settings.do_danger) {
       showToast(t.dashboard.alertDoLow(data.do), "danger");
     }
-    if (data.temp < THRESHOLDS.temp_min || data.temp > THRESHOLDS.temp_max) {
+    if (data.temp < settings.temp_min || data.temp > settings.temp_max) {
       showToast(t.dashboard.alertTempAbnormal(data.temp), "warning");
     }
-    if (data.turbidity > THRESHOLDS.turbidity_max) {
+    if (data.turbidity > settings.turbidity_max) {
       showToast(t.dashboard.alertTurbidityHigh(data.turbidity), "warning");
     }
-  }, [data, showToast, t]);
+  }, [data, settings, showToast, t]);
+
+  const isAutoMode = settings?.system_mode === "auto";
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t.dashboard.title}</h1>
         <div className="flex items-center gap-3">
-          <SystemModeToggle mode={systemMode} onModeChange={setSystemMode} />
+          {settings && <SystemModeToggle mode={settings.system_mode} onModeChange={handleModeChange} />}
           <StatusBadge status={status} />
         </div>
       </div>
@@ -59,25 +64,25 @@ export default function DashboardPage() {
           label={t.dashboard.temp}
           value={data?.temp}
           unit="°C"
-          isDanger={data ? data.temp > THRESHOLDS.temp_max || data.temp < THRESHOLDS.temp_min : false}
+          isDanger={data && settings ? data.temp > settings.temp_max || data.temp < settings.temp_min : false}
         />
         <RealtimeCard
           label={t.dashboard.ph}
           value={data?.ph}
           unit=""
-          isDanger={data ? data.ph > THRESHOLDS.ph_max || data.ph < THRESHOLDS.ph_min : false}
+          isDanger={data && settings ? data.ph > settings.ph_max || data.ph < settings.ph_min : false}
         />
         <RealtimeCard
           label={t.dashboard.do}
           value={data?.do}
           unit="mg/L"
-          isDanger={data ? data.do < THRESHOLDS.do_danger : false}
+          isDanger={data && settings ? data.do < settings.do_danger : false}
         />
         <RealtimeCard
           label={t.dashboard.turbidity}
           value={data?.turbidity}
           unit="NTU"
-          isDanger={data ? data.turbidity > THRESHOLDS.turbidity_max : false}
+          isDanger={data && settings ? data.turbidity > settings.turbidity_max : false}
         />
         <WaterLevelCard isNormal={data?.level} />
       </div>
@@ -85,10 +90,10 @@ export default function DashboardPage() {
       <RealtimeChart data={data} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={systemMode === "auto"} />
-        <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={systemMode === "auto"} />
-        <DeviceControl device="pump_out" label={t.dashboard.devicePumpOut} isAutoMode={systemMode === "auto"} />
-        <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={systemMode === "auto"} />
+        <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />
+        <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={isAutoMode} />
+        <DeviceControl device="pump_out" label={t.dashboard.devicePumpOut} isAutoMode={isAutoMode} />
+        <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={isAutoMode} />
       </div>
 
       <Toast toasts={toasts} />
