@@ -5,13 +5,16 @@ import DeviceControl from "@/components/control/DeviceControl";
 import SystemModeToggle from "@/components/control/SystemModeToggle";
 import RealtimeCard from "@/components/dashboard/RealtimeCard";
 import RealtimeChart from "@/components/dashboard/RealtimeChart";
+import RecommendationCard from "@/components/dashboard/RecommendationCard";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import Toast from "@/components/dashboard/Toast";
 import WaterLevelCard from "@/components/dashboard/WaterLevelCard";
+import MetricTabs from "@/components/history/MetricTabs";
 import { useToast } from "@/hooks/useToast";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import type { HistoryMetric } from "@/types/history";
 import type { Settings, SystemMode } from "@/types/settings";
 
 export default function DashboardPage() {
@@ -20,6 +23,7 @@ export default function DashboardPage() {
   const { t } = useLanguage();
   const lastAlertedTimestamp = useRef<string | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
+  const [riskMetric, setRiskMetric] = useState<HistoryMetric>("do");
 
   useEffect(() => {
     apiClient
@@ -88,6 +92,13 @@ export default function DashboardPage() {
       </div>
 
       <RealtimeChart data={data} />
+
+      {settings && (
+        <div className="flex flex-col gap-3">
+          <MetricTabs active={riskMetric} onChange={setRiskMetric} />
+          <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />

@@ -33,6 +33,16 @@ export const translations = {
             alertDoLow: (value: number) => `DO nguy hiểm: ${value} mg/L`,
             alertTempAbnormal: (value: number) => `Nhiệt độ bất thường: ${value}°C`,
             alertTurbidityHigh: (value: number) => `Độ đục cao: ${value} NTU`,
+            riskTitle: "Dự báo rủi ro AI",
+            riskLevel: { safe: "An toàn", warning: "Cần chú ý", danger: "Nguy hiểm" },
+            riskHint: {
+                do: "Dựa trên mức oxy hoà tan AI dự báo trong thời gian tới.",
+                temp: "Dựa trên nhiệt độ AI dự báo trong thời gian tới.",
+                ph: "Dựa trên độ pH AI dự báo trong thời gian tới.",
+                turbidity: "Dựa trên độ đục AI dự báo trong thời gian tới.",
+            },
+            riskAutoNote: "Hệ thống đang tự động xử lý (chế độ Tự động đang bật).",
+            riskExecute: "Thực thi ngay",
         },
         history: {
             title: "Lịch sử dữ liệu",
@@ -116,6 +126,16 @@ export const translations = {
             alertDoLow: (value: number) => `Dangerous DO level: ${value} mg/L`,
             alertTempAbnormal: (value: number) => `Abnormal temperature: ${value}°C`,
             alertTurbidityHigh: (value: number) => `High turbidity: ${value} NTU`,
+            riskTitle: "AI Risk Forecast",
+            riskLevel: { safe: "Safe", warning: "Needs attention", danger: "Danger" },
+            riskHint: {
+                do: "Based on AI-forecasted dissolved oxygen in the near future.",
+                temp: "Based on AI-forecasted temperature in the near future.",
+                ph: "Based on AI-forecasted pH in the near future.",
+                turbidity: "Based on AI-forecasted turbidity in the near future.",
+            },
+            riskAutoNote: "System is handling this automatically (Auto mode is on).",
+            riskExecute: "Execute now",
         },
         history: {
             title: "Data History",
