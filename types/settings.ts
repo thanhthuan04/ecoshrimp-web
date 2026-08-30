@@ -18,10 +18,13 @@ export interface Settings {
     ph_min: number;
     turbidity_max: number;
     turbidity_min: number;
+    temp_low_threshold: number;
+    ph_low_threshold: number;
 
     auto_aerator: boolean;
     auto_pump_in: boolean;
     auto_pump_out: boolean;
+    auto_light: boolean;
 
     timer_aerator: TimerConfig;
     timer_pump_in: TimerConfig;

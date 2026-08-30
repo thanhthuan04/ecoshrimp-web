@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Settings, SettingsUpdate } from "@/types/settings";
 
 interface AutomationFormProps {
@@ -8,16 +9,18 @@ interface AutomationFormProps {
     onSave: (update: SettingsUpdate) => void;
 }
 
-const AUTO_FIELDS: { key: "auto_aerator" | "auto_pump_in" | "auto_pump_out"; label: string; hint: string }[] = [
-    { key: "auto_aerator", label: "Máy sục khí", hint: "Tự bật khi AI dự báo DO sắp xuống thấp" },
-    { key: "auto_pump_in", label: "Bơm nước vào", hint: "Tự bật khi AI dự báo pH thấp hoặc độ đục cao" },
-    { key: "auto_pump_out", label: "Bơm nước ra", hint: "Tự bật khi nước đang ổn định, không cần pha loãng" },
-];
-
 export default function AutomationForm({ settings, onSave }: AutomationFormProps) {
     const [form, setForm] = useState<Settings>(settings);
+    const { t } = useLanguage();
 
-    function toggle(key: (typeof AUTO_FIELDS)[number]["key"]) {
+    const autoFields: { key: "auto_aerator" | "auto_pump_in" | "auto_pump_out" | "auto_light"; label: string; hint: string }[] = [
+        { key: "auto_aerator", label: t.settings.deviceAerator, hint: t.settings.autoAeratorHint },
+        { key: "auto_pump_in", label: t.settings.devicePumpIn, hint: t.settings.autoPumpInHint },
+        { key: "auto_pump_out", label: t.settings.devicePumpOut, hint: t.settings.autoPumpOutHint },
+        { key: "auto_light", label: t.settings.deviceLight, hint: t.settings.autoLightHint },
+    ];
+
+    function toggle(key: (typeof autoFields)[number]["key"]) {
         setForm((prev) => ({ ...prev, [key]: !prev[key] }));
     }
 
@@ -28,13 +31,11 @@ export default function AutomationForm({ settings, onSave }: AutomationFormProps
 
     return (
         <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-1 text-lg font-bold">Thiết bị theo AI (chế độ Tự động)</h2>
-            <p className="mb-4 text-sm text-slate-500">
-                Chỉ có tác dụng khi hệ thống đang ở chế độ Tự động (bật ở Dashboard).
-            </p>
+            <h2 className="mb-1 text-lg font-bold">{t.settings.automationTitle}</h2>
+            <p className="mb-4 text-sm text-slate-500">{t.settings.automationDesc}</p>
 
             <div className="flex flex-col gap-3">
-                {AUTO_FIELDS.map((field) => (
+                {autoFields.map((field) => (
                     <label
                         key={field.key}
                         className="flex items-center justify-between gap-4 border-b border-slate-100 pb-3"
@@ -54,7 +55,7 @@ export default function AutomationForm({ settings, onSave }: AutomationFormProps
             </div>
 
             <button type="submit" className="mt-6 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white">
-                Lưu cấu hình
+                {t.settings.save}
             </button>
         </form>
     );

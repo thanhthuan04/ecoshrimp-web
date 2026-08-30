@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Settings, SettingsUpdate } from "@/types/settings";
 
 interface ThresholdFormProps {
@@ -8,18 +9,21 @@ interface ThresholdFormProps {
     onSave: (update: SettingsUpdate) => void;
 }
 
-const FIELDS: { key: keyof Settings; label: string; unit: string }[] = [
-    { key: "do_danger", label: "Ngưỡng DO nguy hiểm", unit: "mg/L" },
-    { key: "temp_min", label: "Nhiệt độ tối thiểu", unit: "°C" },
-    { key: "temp_max", label: "Nhiệt độ tối đa", unit: "°C" },
-    { key: "ph_min", label: "pH tối thiểu", unit: "" },
-    { key: "ph_max", label: "pH tối đa", unit: "" },
-    { key: "turbidity_min", label: "Độ đục tối thiểu", unit: "NTU" },
-    { key: "turbidity_max", label: "Độ đục tối đa", unit: "NTU" },
-];
-
 export default function ThresholdForm({ settings, onSave }: ThresholdFormProps) {
     const [form, setForm] = useState<Settings>(settings);
+    const { t } = useLanguage();
+
+    const fields: { key: keyof Settings; label: string; unit: string }[] = [
+        { key: "do_danger", label: t.settings.doDanger, unit: "mg/L" },
+        { key: "temp_min", label: t.settings.tempMin, unit: "°C" },
+        { key: "temp_max", label: t.settings.tempMax, unit: "°C" },
+        { key: "ph_min", label: t.settings.phMin, unit: "" },
+        { key: "ph_max", label: t.settings.phMax, unit: "" },
+        { key: "turbidity_min", label: t.settings.turbidityMin, unit: "NTU" },
+        { key: "turbidity_max", label: t.settings.turbidityMax, unit: "NTU" },
+        { key: "temp_low_threshold", label: t.settings.tempLowThreshold, unit: "°C" },
+        { key: "ph_low_threshold", label: t.settings.phLowThreshold, unit: "" },
+    ];
 
     function handleChange(key: keyof Settings, value: number) {
         setForm((prev) => ({ ...prev, [key]: value }));
@@ -32,10 +36,10 @@ export default function ThresholdForm({ settings, onSave }: ThresholdFormProps) 
 
     return (
         <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-bold">Ngưỡng cảnh báo</h2>
+            <h2 className="mb-4 text-lg font-bold">{t.settings.thresholdTitle}</h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {FIELDS.map((field) => (
+                {fields.map((field) => (
                     <label key={field.key} className="flex flex-col gap-1 text-sm text-slate-600">
                         {field.label} {field.unit && `(${field.unit})`}
                         <input
@@ -50,7 +54,7 @@ export default function ThresholdForm({ settings, onSave }: ThresholdFormProps) 
             </div>
 
             <button type="submit" className="mt-6 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white">
-                Lưu cấu hình
+                {t.settings.save}
             </button>
         </form>
     );

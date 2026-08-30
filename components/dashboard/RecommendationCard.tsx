@@ -14,9 +14,6 @@ interface RecommendationCardProps {
     activeMetric: HistoryMetric;
 }
 
-const PH_LOW_THRESHOLD = 6.5;
-const TURBIDITY_LOW_THRESHOLD_KEY = "turbidity_min" as const;
-
 function resolveDevice(
     metric: HistoryMetric,
     forecast: ForecastData,
@@ -26,11 +23,11 @@ function resolveDevice(
         case "do":
             return "aerator";
         case "temp":
-            return forecast.future_temp < 22 ? "light" : "pump_in";
+            return forecast.future_temp < settings.temp_low_threshold ? "light" : "pump_in";
         case "ph":
-            return forecast.future_ph < PH_LOW_THRESHOLD ? "pump_in" : "pump_out";
+            return forecast.future_ph < settings.ph_low_threshold ? "pump_in" : "pump_out";
         case "turbidity":
-            return forecast.future_turbidity < settings[TURBIDITY_LOW_THRESHOLD_KEY] ? "pump_in" : "pump_out";
+            return forecast.future_turbidity < settings.turbidity_min ? "pump_in" : "pump_out";
         default:
             return null;
     }
