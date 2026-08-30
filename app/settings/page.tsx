@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AutomationForm from "@/components/settings/AutomationForm";
+import GeneralForm from "@/components/settings/GeneralForm";
 import ThresholdForm from "@/components/settings/ThresholdForm";
 import TimerForm from "@/components/settings/TimerForm";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -41,6 +42,7 @@ export default function SettingsPage() {
     return (
         <div className="flex flex-col gap-6">
             <h1 className="text-2xl font-bold">{t.settings.title}</h1>
+            <GeneralForm settings={settings} onSave={handleSave} />
             <ThresholdForm settings={settings} onSave={handleSave} />
             <AutomationForm settings={settings} onSave={handleSave} />
             <TimerForm settings={settings} onSave={handleSave} />

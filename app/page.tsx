@@ -9,6 +9,7 @@ import RecommendationCard from "@/components/dashboard/RecommendationCard";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import Toast from "@/components/dashboard/Toast";
 import WaterLevelCard from "@/components/dashboard/WaterLevelCard";
+import WeatherWidget from "@/components/dashboard/WeatherWidget";
 import MetricTabs from "@/components/history/MetricTabs";
 import { useToast } from "@/hooks/useToast";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -94,9 +95,12 @@ export default function DashboardPage() {
       <RealtimeChart data={data} />
 
       {settings && (
-        <div className="flex flex-col gap-3">
-          <MetricTabs active={riskMetric} onChange={setRiskMetric} />
-          <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="flex flex-col gap-3 lg:col-span-2">
+            <MetricTabs active={riskMetric} onChange={setRiskMetric} />
+            <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
+          </div>
+          <WeatherWidget location={settings.farm_location} />
         </div>
       )}
 

@@ -69,6 +69,20 @@ export const translations = {
             noData: "Không có dữ liệu",
             exportCsv: "Xuất File CSV",
         },
+        general: {
+            title: "Thông tin chung",
+            farmLocation: "Vị trí ao nuôi",
+            farmLocationHint: "Dùng để hiển thị thời tiết đúng khu vực ao nuôi.",
+            save: "Lưu vị trí",
+        },
+        weather: {
+            title: "Thời tiết khu vực ao",
+            loading: "Đang tải thời tiết...",
+            error: "Không tải được thời tiết.",
+            humidity: "Độ ẩm",
+            wind: "Gió",
+            forecast4Days: "Dự báo 4 ngày tới",
+        },
         settings: {
             title: "Cấu hình hệ thống",
             thresholdTitle: "Ngưỡng cảnh báo",
@@ -161,6 +175,20 @@ export const translations = {
             colTurbidity: "Turbidity (NTU)",
             noData: "No data",
             exportCsv: "Export CSV",
+        },
+        general: {
+            title: "General",
+            farmLocation: "Farm location",
+            farmLocationHint: "Used to show weather for your pond's area.",
+            save: "Save location",
+        },
+        weather: {
+            title: "Pond area weather",
+            loading: "Loading weather...",
+            error: "Failed to load weather.",
+            humidity: "Humidity",
+            wind: "Wind",
+            forecast4Days: "Next 4 days",
         },
         settings: {
             title: "System Settings",

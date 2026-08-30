@@ -8,6 +8,7 @@ export type SystemMode = "auto" | "manual";
 
 export interface Settings {
     system_mode: SystemMode;
+    farm_location: string;
 
     do_danger: number;
     ai_early_warning: number;
