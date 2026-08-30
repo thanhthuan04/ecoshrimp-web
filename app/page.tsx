@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Droplet, FlaskConical, Thermometer, Wind } from "lucide-react";
 import DeviceControl from "@/components/control/DeviceControl";
 import SystemModeToggle from "@/components/control/SystemModeToggle";
 import RealtimeCard from "@/components/dashboard/RealtimeCard";
@@ -14,9 +15,17 @@ import MetricTabs from "@/components/history/MetricTabs";
 import { useToast } from "@/hooks/useToast";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
+import { calcTrendPercent } from "@/lib/calcTrend";
 import { useWebSocket } from "@/hooks/useWebSocket";
-import type { HistoryMetric } from "@/types/history";
+import type { HistoryMetric, HistoryPoint } from "@/types/history";
 import type { Settings, SystemMode } from "@/types/settings";
+
+interface DailyAverage {
+  temp: number;
+  ph: number;
+  do: number;
+  turbidity: number;
+}
 
 export default function DashboardPage() {
   const { data, status } = useWebSocket();
@@ -25,12 +34,29 @@ export default function DashboardPage() {
   const lastAlertedTimestamp = useRef<string | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [riskMetric, setRiskMetric] = useState<HistoryMetric>("do");
+  const [yesterdayAvg, setYesterdayAvg] = useState<DailyAverage | null>(null);
 
   useEffect(() => {
     apiClient
       .get<Settings>("/api/settings")
       .then(setSettings)
       .catch((error) => console.error("Không tải được cấu hình ngưỡng:", error));
+  }, []);
+
+  useEffect(() => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const dateStr = yesterday.toISOString().slice(0, 10);
+
+    apiClient
+      .get<HistoryPoint[]>(`/api/history?range=day&date=${dateStr}`)
+      .then((points) => {
+        if (points.length === 0) return;
+        const avg = (key: keyof HistoryPoint) =>
+          points.reduce((sum, p) => sum + (p[key] as number), 0) / points.length;
+        setYesterdayAvg({ temp: avg("temp"), ph: avg("ph"), do: avg("do"), turbidity: avg("turbidity") });
+      })
+      .catch((error) => console.error("Không tải được dữ liệu hôm qua để tính trend:", error));
   }, []);
 
   function handleModeChange(mode: SystemMode) {
@@ -69,25 +95,33 @@ export default function DashboardPage() {
           label={t.dashboard.temp}
           value={data?.temp}
           unit="°C"
+          icon={Thermometer}
           isDanger={data && settings ? data.temp > settings.temp_max || data.temp < settings.temp_min : false}
+          trendPercent={calcTrendPercent(data?.temp, yesterdayAvg?.temp)}
         />
         <RealtimeCard
           label={t.dashboard.ph}
           value={data?.ph}
           unit=""
+          icon={FlaskConical}
           isDanger={data && settings ? data.ph > settings.ph_max || data.ph < settings.ph_min : false}
+          trendPercent={calcTrendPercent(data?.ph, yesterdayAvg?.ph)}
         />
         <RealtimeCard
           label={t.dashboard.do}
           value={data?.do}
           unit="mg/L"
+          icon={Wind}
           isDanger={data && settings ? data.do < settings.do_danger : false}
+          trendPercent={calcTrendPercent(data?.do, yesterdayAvg?.do)}
         />
         <RealtimeCard
           label={t.dashboard.turbidity}
           value={data?.turbidity}
           unit="NTU"
+          icon={Droplet}
           isDanger={data && settings ? data.turbidity > settings.turbidity_max : false}
+          trendPercent={calcTrendPercent(data?.turbidity, yesterdayAvg?.turbidity)}
         />
         <WaterLevelCard isNormal={data?.level} />
       </div>
