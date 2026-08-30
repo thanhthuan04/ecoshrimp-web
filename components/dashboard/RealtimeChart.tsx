@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { SensorData } from "@/types/sensor";
+import type { Settings } from "@/types/settings";
 
 const MAX_POINTS = 30;
 
@@ -14,7 +15,12 @@ interface ChartPoint {
     ph: number;
 }
 
-export default function RealtimeChart({ data }: { data: SensorData | null }) {
+interface RealtimeChartProps {
+    data: SensorData | null;
+    settings: Settings | null;
+}
+
+export default function RealtimeChart({ data, settings }: RealtimeChartProps) {
     const [points, setPoints] = useState<ChartPoint[]>([]);
     const { t, language } = useLanguage();
 
@@ -38,6 +44,9 @@ export default function RealtimeChart({ data }: { data: SensorData | null }) {
                     <XAxis dataKey="time" stroke="#94a3b8" fontSize={12} />
                     <YAxis stroke="#94a3b8" fontSize={12} />
                     <Tooltip />
+                    {settings && (
+                        <ReferenceArea y1={0} y2={settings.do_danger} fill="#ef4444" fillOpacity={0.08} ifOverflow="extendDomain" />
+                    )}
                     <Line type="monotone" dataKey="temp" stroke="#fb923c" name={t.history.tempLegend} strokeWidth={2} dot={false} />
                     <Line type="monotone" dataKey="do" stroke="#22c55e" name={t.history.doLegend} strokeWidth={2} dot={false} />
                     <Line type="monotone" dataKey="ph" stroke="#93c5fd" name={t.history.phLegend} strokeWidth={2} dot={false} />

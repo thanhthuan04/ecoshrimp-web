@@ -3,7 +3,7 @@ import type { HistoryPoint } from "@/types/history";
 
 export default function DataTable({ points }: { points: HistoryPoint[] }) {
     const { t } = useLanguage();
-    const rows = [...points].reverse(); // mới nhất trước, khớp bản gốc
+    const rows = [...points].reverse();
 
     return (
         <div className="overflow-x-auto rounded-2xl bg-white p-4 shadow-sm">

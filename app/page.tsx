@@ -92,7 +92,7 @@ export default function DashboardPage() {
         <WaterLevelCard isNormal={data?.level} />
       </div>
 
-      <RealtimeChart data={data} />
+      <RealtimeChart data={data} settings={settings} />
 
       {settings && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -107,7 +107,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />
         <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={isAutoMode} />
-        <DeviceControl device="pump_out" label={t.dashboard.devicePumpOut} isAutoMode={isAutoMode} />
+        <DeviceControl device="pump_out" label={t.dashboard.devicePumpOut} isAutoMode={isAutoMode} isWaterLow={data ? !data.level : false} onBlocked={(msg) => showToast(msg, "warning")} />
         <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={isAutoMode} />
       </div>
 
