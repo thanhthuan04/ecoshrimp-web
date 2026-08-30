@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
+import AppShell from "@/components/layout/AppShell";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import "./globals.css";
 
@@ -8,6 +8,7 @@ const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
+  variable: "--font-be-vietnam-pro",
 });
 
 export const metadata: Metadata = {
@@ -17,11 +18,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi">
-      <body className={`${beVietnamPro.className} min-h-screen bg-slate-50 text-slate-900`}>
+    <html lang="vi" className={beVietnamPro.variable}>
+      <body className="min-h-screen bg-surface-subtle font-sans text-text-primary antialiased">
         <LanguageProvider>
-          <Navbar />
-          <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+          <AppShell>{children}</AppShell>
         </LanguageProvider>
       </body>
     </html>
