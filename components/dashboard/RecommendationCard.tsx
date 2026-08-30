@@ -14,11 +14,27 @@ interface RecommendationCardProps {
     activeMetric: HistoryMetric;
 }
 
-const DEVICE_BY_METRIC: Partial<Record<HistoryMetric, "aerator" | "pump_in">> = {
-    do: "aerator",
-    ph: "pump_in",
-    turbidity: "pump_in",
-};
+const PH_LOW_THRESHOLD = 6.5;
+const TURBIDITY_LOW_THRESHOLD_KEY = "turbidity_min" as const;
+
+function resolveDevice(
+    metric: HistoryMetric,
+    forecast: ForecastData,
+    settings: Settings
+): "aerator" | "pump_in" | "pump_out" | "light" | null {
+    switch (metric) {
+        case "do":
+            return "aerator";
+        case "temp":
+            return forecast.future_temp < 22 ? "light" : "pump_in";
+        case "ph":
+            return forecast.future_ph < PH_LOW_THRESHOLD ? "pump_in" : "pump_out";
+        case "turbidity":
+            return forecast.future_turbidity < settings[TURBIDITY_LOW_THRESHOLD_KEY] ? "pump_in" : "pump_out";
+        default:
+            return null;
+    }
+}
 
 export default function RecommendationCard({ forecast, settings, activeMetric }: RecommendationCardProps) {
     const { t } = useLanguage();
@@ -40,7 +56,7 @@ export default function RecommendationCard({ forecast, settings, activeMetric }:
                     ? calcRangeRisk(forecast.future_ph, settings.ph_min, settings.ph_max)
                     : calcRangeRisk(forecast.future_turbidity, settings.turbidity_min, settings.turbidity_max);
 
-    const device = DEVICE_BY_METRIC[activeMetric];
+    const device = resolveDevice(activeMetric, forecast, settings);
     const canExecute = device && risk.level !== "safe" && settings.system_mode === "manual";
 
     async function handleExecute() {
