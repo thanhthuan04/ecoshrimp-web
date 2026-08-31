@@ -20,7 +20,7 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
     ];
 
     return (
-        <aside className="flex h-full w-64 flex-col gap-1 border-r border-black/5 bg-surface p-4">
+        <aside className="flex h-full w-64 flex-col gap-1 border-r border-border bg-surface p-4">
             <Link href="/" onClick={onNavigate} className="mb-6 flex items-center gap-2 px-2">
                 <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white">
                     <Waves className="h-5 w-5" />
@@ -36,8 +36,8 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
                         href={href}
                         onClick={onNavigate}
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${isActive
-                                ? "bg-primary-soft text-primary-dark"
-                                : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+                            ? "bg-primary-soft text-primary-dark"
+                            : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
                             }`}
                     >
                         <Icon className="h-5 w-5" />

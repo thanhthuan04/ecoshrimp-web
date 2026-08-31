@@ -1,8 +1,72 @@
 @import "tailwindcss";
 
+/* ============================================
+   EcoShrimp Design System
+   Light + Dark palette - class-based switching qua .dark trên <html>
+   ============================================ */
+
 :root {
   --background: #ffffff;
   --foreground: #17211b;
+
+  --c-primary: #16a34a;
+  --c-primary-dark: #166534;
+  --c-primary-light: #059669;
+  --c-primary-soft: #ecfdf5;
+
+  --c-surface: #ffffff;
+  --c-surface-subtle: #f8faf9;
+  --c-surface-muted: #f5f7f6;
+
+  --c-text-primary: #17211b;
+  --c-text-secondary: #66736b;
+  --c-text-muted: #98a39d;
+
+  --c-border: rgba(0, 0, 0, 0.06);
+
+  --c-success: #16a34a;
+  --c-success-soft: #ecfdf5;
+  --c-warning: #f59e0b;
+  --c-warning-soft: #fffbeb;
+  --c-danger: #ef4444;
+  --c-danger-soft: #fef2f2;
+  --c-info: #3b82f6;
+  --c-info-soft: #eff6ff;
+
+  --c-shadow-card: 0 1px 2px rgba(23, 33, 27, 0.04), 0 4px 12px rgba(23, 33, 27, 0.04);
+  --c-shadow-card-hover: 0 2px 4px rgba(23, 33, 27, 0.06), 0 8px 24px rgba(23, 33, 27, 0.08);
+}
+
+.dark {
+  --background: #0b120e;
+  --foreground: #e7ede9;
+
+  --c-primary: #22c55e;
+  --c-primary-dark: #86efac;
+  --c-primary-light: #4ade80;
+  --c-primary-soft: #123321;
+
+  --c-surface: #101915;
+  --c-surface-subtle: #0b120e;
+  --c-surface-muted: #17221c;
+
+  --c-text-primary: #e7ede9;
+  --c-text-secondary: #9fb0a6;
+  --c-text-muted: #6c7d73;
+
+  --c-border: rgba(255, 255, 255, 0.08);
+
+  --c-success: #22c55e;
+  --c-success-soft: #123321;
+  --c-warning: #fbbf24;
+  --c-warning-soft: #2c2410;
+  --c-danger: #f87171;
+  --c-danger-soft: #2c1616;
+  --c-info: #60a5fa;
+  --c-info-soft: #142338;
+
+  --c-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.4);
+  --c-shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.5), 0 10px 28px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
@@ -10,52 +74,39 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-be-vietnam-pro);
 
-  /* ============================================
-     EcoShrimp Design System
-     ============================================ */
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-primary-light: var(--c-primary-light);
+  --color-primary-soft: var(--c-primary-soft);
 
-  /* Primary - Eco Green */
-  --color-primary: #16a34a;
-  --color-primary-dark: #166534;
-  --color-primary-light: #059669;
-  --color-primary-soft: #ecfdf5;
+  --color-surface: var(--c-surface);
+  --color-surface-subtle: var(--c-surface-subtle);
+  --color-surface-muted: var(--c-surface-muted);
 
-  /* Surface */
-  --color-surface: #ffffff;
-  --color-surface-subtle: #f8faf9;
-  --color-surface-muted: #f5f7f6;
+  --color-text-primary: var(--c-text-primary);
+  --color-text-secondary: var(--c-text-secondary);
+  --color-text-muted: var(--c-text-muted);
 
-  /* Text */
-  --color-text-primary: #17211b;
-  --color-text-secondary: #66736b;
-  --color-text-muted: #98a39d;
+  --color-border: var(--c-border);
 
-  /* Semantic status - dùng nhất quán cho danger/warning/safe xuyên suốt app */
-  --color-success: #16a34a;
-  --color-success-soft: #ecfdf5;
-  --color-warning: #f59e0b;
-  --color-warning-soft: #fffbeb;
-  --color-danger: #ef4444;
-  --color-danger-soft: #fef2f2;
-  --color-info: #3b82f6;
-  --color-info-soft: #eff6ff;
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+  --color-warning: var(--c-warning);
+  --color-warning-soft: var(--c-warning-soft);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-info: var(--c-info);
+  --color-info-soft: var(--c-info-soft);
 
-  /* Radius scale dùng chung, thay thế rounded-lg/xl/2xl rải rác trước đây */
   --radius-card: 1rem;
   --radius-pill: 999px;
 
-  /* Shadow scale dùng chung */
-  --shadow-card: 0 1px 2px rgba(23, 33, 27, 0.04), 0 4px 12px rgba(23, 33, 27, 0.04);
-  --shadow-card-hover: 0 2px 4px rgba(23, 33, 27, 0.06), 0 8px 24px rgba(23, 33, 27, 0.08);
+  --shadow-card: var(--c-shadow-card);
+  --shadow-card-hover: var(--c-shadow-card-hover);
 }
-
-/*
-  LƯU Ý: bản gốc có khối @media (prefers-color-scheme: dark) tự đổi màu theo OS.
-  Đã bỏ vì Giai đoạn 8 mới chỉ xây bảng màu SÁNG (Eco Green) - bật dark mode tự động
-  lúc này sẽ làm lệch màu so với hệ thống mới, cần thiết kế riêng bảng dark sau.
-*/
 
 body {
   background: var(--color-surface-subtle);
   color: var(--color-text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
