@@ -46,14 +46,14 @@ export default function DeviceControl({ device, label, isAutoMode, isWaterLow, o
     }
 
     return (
-        <div className="flex items-center justify-between rounded-2xl bg-white p-4 shadow-sm">
+        <div className="flex items-center justify-between rounded-card bg-surface p-4 shadow-card">
             <div className="flex items-center gap-3">
-                <Icon className={`h-5 w-5 ${isOn ? "text-emerald-500" : "text-slate-400"}`} />
+                <Icon className={`h-5 w-5 ${isOn ? "text-primary" : "text-text-muted"}`} />
                 <div>
-                    <span className="text-sm font-medium text-slate-700">{label}</span>
-                    {isAutoMode && <p className="text-xs text-emerald-600">{t.dashboard.controllingByAi}</p>}
+                    <span className="text-sm font-medium text-text-primary">{label}</span>
+                    {isAutoMode && <p className="text-xs text-primary">{t.dashboard.controllingByAi}</p>}
                     {!isAutoMode && isInterlocked && (
-                        <p className="text-xs text-red-500">{t.dashboard.pumpOutBlockedWaterLow}</p>
+                        <p className="text-xs text-danger">{t.dashboard.pumpOutBlockedWaterLow}</p>
                     )}
                 </div>
             </div>
@@ -62,10 +62,10 @@ export default function DeviceControl({ device, label, isAutoMode, isWaterLow, o
                 onClick={toggle}
                 disabled={isLoading || isAutoMode || isInterlocked}
                 title={isAutoMode ? t.dashboard.lockedTooltip : isInterlocked ? t.dashboard.pumpOutBlockedWaterLow : undefined}
-                className={`h-8 w-14 rounded-full transition ${isOn ? "bg-emerald-500" : "bg-slate-200"} disabled:cursor-not-allowed disabled:opacity-50`}
+                className={`h-8 w-14 rounded-pill transition ${isOn ? "bg-primary" : "bg-surface-muted"} disabled:cursor-not-allowed disabled:opacity-50`}
             >
                 <span
-                    className={`block h-6 w-6 rounded-full bg-white shadow transition-transform ${isOn ? "translate-x-7" : "translate-x-1"
+                    className={`block h-6 w-6 rounded-full bg-surface shadow transition-transform ${isOn ? "translate-x-7" : "translate-x-1"
                         }`}
                 />
             </button>

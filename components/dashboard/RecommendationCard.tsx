@@ -38,8 +38,8 @@ export default function RecommendationCard({ forecast, settings, activeMetric }:
 
     if (!forecast) {
         return (
-            <div className="flex items-center justify-center rounded-2xl bg-white p-6 shadow-sm">
-                <p className="text-sm text-slate-400">{t.common.loading}</p>
+            <div className="flex items-center justify-center rounded-card bg-surface p-6 shadow-card">
+                <p className="text-sm text-text-muted">{t.common.loading}</p>
             </div>
         );
     }
@@ -66,22 +66,22 @@ export default function RecommendationCard({ forecast, settings, activeMetric }:
     }
 
     return (
-        <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-6 text-center shadow-sm sm:flex-row sm:text-left">
+        <div className="flex flex-col items-center gap-4 rounded-card bg-surface p-6 text-center shadow-card sm:flex-row sm:text-left">
             <RiskGauge percent={risk.percent} level={risk.level} />
             <div className="flex-1">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{t.dashboard.riskTitle}</p>
-                <p className="mt-1 text-base font-bold text-slate-800">{t.dashboard.riskLevel[risk.level]}</p>
-                <p className="mt-1 text-sm text-slate-500">{t.dashboard.riskHint[activeMetric]}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">{t.dashboard.riskTitle}</p>
+                <p className="mt-1 text-base font-bold text-text-primary">{t.dashboard.riskLevel[risk.level]}</p>
+                <p className="mt-1 text-sm text-text-secondary">{t.dashboard.riskHint[activeMetric]}</p>
 
                 {settings.system_mode === "auto" && risk.level !== "safe" && (
-                    <p className="mt-2 text-xs font-medium text-emerald-600">{t.dashboard.riskAutoNote}</p>
+                    <p className="mt-2 text-xs font-medium text-primary">{t.dashboard.riskAutoNote}</p>
                 )}
 
                 {canExecute && (
                     <button
                         type="button"
                         onClick={handleExecute}
-                        className="mt-3 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white"
+                        className="mt-3 rounded-pill bg-primary px-4 py-1.5 text-xs font-semibold text-white"
                     >
                         {t.dashboard.riskExecute}
                     </button>

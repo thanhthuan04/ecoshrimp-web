@@ -29,12 +29,12 @@ export default function SystemModeToggle({ mode, onModeChange }: SystemModeToggl
     }
 
     return (
-        <div className="flex items-center gap-2 rounded-full bg-slate-100 p-1">
+        <div className="flex items-center gap-2 rounded-pill bg-surface-muted p-1">
             <button
                 type="button"
                 onClick={() => switchMode("manual")}
                 disabled={isLoading}
-                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "manual" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
+                className={`flex items-center gap-1.5 rounded-pill px-4 py-1.5 text-sm font-semibold transition ${mode === "manual" ? "bg-surface text-text-primary shadow-card" : "text-text-secondary"
                     }`}
             >
                 <Hand className="h-4 w-4" />
@@ -44,7 +44,7 @@ export default function SystemModeToggle({ mode, onModeChange }: SystemModeToggl
                 type="button"
                 onClick={() => switchMode("auto")}
                 disabled={isLoading}
-                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition ${mode === "auto" ? "bg-emerald-500 text-white shadow-sm" : "text-slate-500"
+                className={`flex items-center gap-1.5 rounded-pill px-4 py-1.5 text-sm font-semibold transition ${mode === "auto" ? "bg-primary text-white shadow-card" : "text-text-secondary"
                     }`}
             >
                 <Sparkles className="h-4 w-4" />

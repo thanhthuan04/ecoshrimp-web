@@ -5,9 +5,9 @@ import { useLanguage } from "@/hooks/useLanguage";
 import type { ConnectionStatus } from "@/hooks/useWebSocket";
 
 const STATUS_STYLE: Record<ConnectionStatus, string> = {
-    online: "bg-emerald-100 text-emerald-700",
-    connecting: "bg-amber-100 text-amber-700",
-    offline: "bg-red-100 text-red-700",
+    online: "bg-success-soft text-success",
+    connecting: "bg-warning-soft text-warning",
+    offline: "bg-danger-soft text-danger",
 };
 
 const STATUS_ICON: Record<ConnectionStatus, typeof Wifi> = {
@@ -22,7 +22,7 @@ export default function StatusBadge({ status }: { status: ConnectionStatus }) {
 
     return (
         <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLE[status]}`}
+            className={`inline-flex items-center gap-2 rounded-pill px-3 py-1 text-xs font-semibold ${STATUS_STYLE[status]}`}
         >
             <Icon className={`h-3.5 w-3.5 ${status === "connecting" ? "animate-spin" : ""}`} />
             {t.status[status]}

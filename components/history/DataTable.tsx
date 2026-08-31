@@ -6,11 +6,11 @@ export default function DataTable({ points }: { points: HistoryPoint[] }) {
     const rows = [...points].reverse();
 
     return (
-        <div className="overflow-x-auto rounded-2xl bg-white p-4 shadow-sm">
-            <h3 className="mb-3 px-2 text-sm font-bold text-slate-700">{t.history.tableTitle}</h3>
+        <div className="overflow-x-auto rounded-card bg-surface p-4 shadow-card">
+            <h3 className="mb-3 px-2 text-sm font-bold text-text-primary">{t.history.tableTitle}</h3>
             <table className="w-full text-left text-sm">
                 <thead>
-                    <tr className="border-b-2 border-slate-100 text-slate-500">
+                    <tr className="border-b-2 border-border text-text-secondary">
                         <th className="p-3 font-semibold">{t.history.colTime}</th>
                         <th className="p-3 font-semibold">{t.history.colDo}</th>
                         <th className="p-3 font-semibold">{t.history.colTemp}</th>
@@ -21,18 +21,18 @@ export default function DataTable({ points }: { points: HistoryPoint[] }) {
                 <tbody>
                     {rows.length === 0 ? (
                         <tr>
-                            <td colSpan={5} className="p-6 text-center text-slate-400">
+                            <td colSpan={5} className="p-6 text-center text-text-muted">
                                 {t.history.noData}
                             </td>
                         </tr>
                     ) : (
                         rows.map((row) => (
-                            <tr key={row.timestamp} className="border-b border-slate-50">
+                            <tr key={row.timestamp} className="border-b border-border">
                                 <td className="p-3">{new Date(row.timestamp).toLocaleString()}</td>
-                                <td className="p-3 font-semibold text-emerald-600">{row.do.toFixed(2)}</td>
-                                <td className="p-3 font-semibold text-orange-500">{row.temp.toFixed(1)}</td>
-                                <td className="p-3 font-semibold text-blue-500">{row.ph.toFixed(2)}</td>
-                                <td className="p-3 font-semibold text-red-500">{row.turbidity.toFixed(1)}</td>
+                                <td className="p-3 font-semibold text-success">{row.do.toFixed(2)}</td>
+                                <td className="p-3 font-semibold text-warning">{row.temp.toFixed(1)}</td>
+                                <td className="p-3 font-semibold text-info">{row.ph.toFixed(2)}</td>
+                                <td className="p-3 font-semibold text-danger">{row.turbidity.toFixed(1)}</td>
                             </tr>
                         ))
                     )}

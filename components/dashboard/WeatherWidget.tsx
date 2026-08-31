@@ -69,20 +69,20 @@ export default function WeatherWidget({ location }: { location: string }) {
     }, [location]);
 
     return (
-        <div className="rounded-2xl bg-white p-6 shadow-sm">
+        <div className="rounded-card bg-surface p-6 shadow-card">
             <div className="mb-4 flex items-center gap-2">
-                <CloudSun className="h-5 w-5 text-blue-400" />
-                <h2 className="text-sm font-semibold text-slate-500">{t.weather.title}</h2>
+                <CloudSun className="h-5 w-5 text-info" />
+                <h2 className="text-sm font-semibold text-text-secondary">{t.weather.title}</h2>
             </div>
 
-            {error && <p className="text-sm text-red-500">{t.weather.error}</p>}
-            {!error && !weather && <p className="text-sm text-slate-400">{t.weather.loading}</p>}
+            {error && <p className="text-sm text-danger">{t.weather.error}</p>}
+            {!error && !weather && <p className="text-sm text-text-muted">{t.weather.loading}</p>}
 
             {weather && (
                 <>
                     <div className="flex items-center justify-between">
-                        <p className="text-4xl font-extrabold text-slate-800">{Math.round(weather.currentTemp)}°C</p>
-                        <div className="flex flex-col gap-1 text-xs text-slate-500">
+                        <p className="text-4xl font-extrabold text-text-primary">{Math.round(weather.currentTemp)}°C</p>
+                        <div className="flex flex-col gap-1 text-xs text-text-secondary">
                             <span className="flex items-center gap-1">
                                 <Droplet className="h-3.5 w-3.5" /> {t.weather.humidity}: {weather.humidity}%
                             </span>
@@ -92,15 +92,15 @@ export default function WeatherWidget({ location }: { location: string }) {
                         </div>
                     </div>
 
-                    <p className="mb-2 mt-5 text-xs font-semibold text-slate-400">{t.weather.forecast4Days}</p>
+                    <p className="mb-2 mt-5 text-xs font-semibold text-text-muted">{t.weather.forecast4Days}</p>
                     <div className="grid grid-cols-4 gap-2">
                         {weather.daily.map((day) => (
-                            <div key={day.date} className="rounded-xl bg-slate-50 p-2 text-center">
-                                <p className="text-[11px] text-slate-400">
+                            <div key={day.date} className="rounded-xl bg-surface-muted p-2 text-center">
+                                <p className="text-[11px] text-text-muted">
                                     {new Date(day.date).toLocaleDateString(undefined, { weekday: "short" })}
                                 </p>
-                                <p className="mt-1 text-xs font-semibold text-slate-700">{Math.round(day.maxTemp)}°</p>
-                                <p className="text-[11px] text-slate-400">{Math.round(day.minTemp)}°</p>
+                                <p className="mt-1 text-xs font-semibold text-text-primary">{Math.round(day.maxTemp)}°</p>
+                                <p className="text-[11px] text-text-muted">{Math.round(day.minTemp)}°</p>
                             </div>
                         ))}
                     </div>

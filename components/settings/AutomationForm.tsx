@@ -30,31 +30,28 @@ export default function AutomationForm({ settings, onSave }: AutomationFormProps
     }
 
     return (
-        <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-1 text-lg font-bold">{t.settings.automationTitle}</h2>
-            <p className="mb-4 text-sm text-slate-500">{t.settings.automationDesc}</p>
+        <form onSubmit={handleSubmit} className="rounded-card bg-surface p-6 shadow-card">
+            <h2 className="mb-1 text-lg font-bold text-text-primary">{t.settings.automationTitle}</h2>
+            <p className="mb-4 text-sm text-text-secondary">{t.settings.automationDesc}</p>
 
             <div className="flex flex-col gap-3">
                 {autoFields.map((field) => (
-                    <label
-                        key={field.key}
-                        className="flex items-center justify-between gap-4 border-b border-slate-100 pb-3"
-                    >
+                    <label key={field.key} className="flex items-center justify-between gap-4 border-b border-border pb-3">
                         <div>
-                            <p className="text-sm font-medium text-slate-700">{field.label}</p>
-                            <p className="text-xs text-slate-400">{field.hint}</p>
+                            <p className="text-sm font-medium text-text-primary">{field.label}</p>
+                            <p className="text-xs text-text-muted">{field.hint}</p>
                         </div>
                         <input
                             type="checkbox"
                             checked={form[field.key]}
                             onChange={() => toggle(field.key)}
-                            className="h-5 w-5"
+                            className="h-5 w-5 accent-primary"
                         />
                     </label>
                 ))}
             </div>
 
-            <button type="submit" className="mt-6 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white">
+            <button type="submit" className="mt-6 rounded-pill bg-primary px-5 py-2 text-sm font-semibold text-white">
                 {t.settings.save}
             </button>
         </form>

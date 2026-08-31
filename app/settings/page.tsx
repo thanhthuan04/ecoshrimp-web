@@ -32,11 +32,11 @@ export default function SettingsPage() {
     }
 
     if (isLoading) {
-        return <p className="text-sm text-slate-500">{t.common.loading}</p>;
+        return <p className="text-sm text-text-secondary">{t.common.loading}</p>;
     }
 
     if (!settings) {
-        return <p className="text-sm text-red-600">{t.common.loadError}</p>;
+        return <p className="text-sm text-danger">{t.common.loadError}</p>;
     }
 
     return (

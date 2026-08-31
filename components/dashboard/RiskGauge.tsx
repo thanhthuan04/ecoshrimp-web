@@ -1,9 +1,9 @@
 import type { RiskLevel } from "@/lib/riskCalculator";
 
 const LEVEL_COLOR: Record<RiskLevel, string> = {
-    safe: "#22c55e",
-    warning: "#f59e0b",
-    danger: "#ef4444",
+    safe: "var(--color-success)",
+    warning: "var(--color-warning)",
+    danger: "var(--color-danger)",
 };
 
 export default function RiskGauge({ percent, level }: { percent: number; level: RiskLevel }) {
@@ -14,7 +14,7 @@ export default function RiskGauge({ percent, level }: { percent: number; level: 
 
     return (
         <svg viewBox="0 0 130 130" className="h-28 w-28 shrink-0">
-            <circle cx="65" cy="65" r={radius} fill="none" stroke="#e2e8f0" strokeWidth="12" />
+            <circle cx="65" cy="65" r={radius} fill="none" stroke="var(--color-border)" strokeWidth="12" />
             <circle
                 cx="65"
                 cy="65"

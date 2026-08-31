@@ -19,13 +19,13 @@ export default function MetricTabs({ active, onChange }: MetricTabsProps) {
     ];
 
     return (
-        <div className="flex gap-1 overflow-x-auto rounded-full border border-slate-200 bg-slate-50 p-1">
+        <div className="flex gap-1 overflow-x-auto rounded-pill border border-border bg-surface-muted p-1">
             {metrics.map((metric) => (
                 <button
                     key={metric.key}
                     type="button"
                     onClick={() => onChange(metric.key)}
-                    className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold transition ${active === metric.key ? "bg-white text-emerald-600 shadow-sm" : "text-slate-500"
+                    className={`whitespace-nowrap rounded-pill px-3 py-1.5 text-xs font-bold transition ${active === metric.key ? "bg-surface text-primary shadow-card" : "text-text-secondary"
                         }`}
                 >
                     {metric.label}
