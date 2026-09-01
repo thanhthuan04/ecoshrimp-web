@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Droplet, FlaskConical, Thermometer, Wind } from "lucide-react";
+import { AlertTriangle, Droplet, FlaskConical, Thermometer, Wind } from "lucide-react";
 import DeviceControl from "@/components/control/DeviceControl";
 import SystemModeToggle from "@/components/control/SystemModeToggle";
 import RealtimeCard from "@/components/dashboard/RealtimeCard";
@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/useToast";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import { calcTrendPercent } from "@/lib/calcTrend";
+import { DEFAULT_SETTINGS } from "@/lib/defaultSettings";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import type { HistoryMetric, HistoryPoint } from "@/types/history";
 import type { Settings, SystemMode } from "@/types/settings";
@@ -32,15 +33,22 @@ export default function DashboardPage() {
   const { toasts, showToast } = useToast();
   const { t } = useLanguage();
   const lastAlertedTimestamp = useRef<string | null>(null);
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [isSettingsOffline, setIsSettingsOffline] = useState(false);
   const [riskMetric, setRiskMetric] = useState<HistoryMetric>("do");
   const [yesterdayAvg, setYesterdayAvg] = useState<DailyAverage | null>(null);
 
   useEffect(() => {
     apiClient
       .get<Settings>("/api/settings")
-      .then(setSettings)
-      .catch((error) => console.error("Không tải được cấu hình ngưỡng:", error));
+      .then((result) => {
+        setSettings(result);
+        setIsSettingsOffline(false);
+      })
+      .catch((error) => {
+        console.error("Không tải được cấu hình ngưỡng, dùng giá trị mặc định:", error);
+        setIsSettingsOffline(true);
+      });
   }, []);
 
   useEffect(() => {
@@ -60,11 +68,11 @@ export default function DashboardPage() {
   }, []);
 
   function handleModeChange(mode: SystemMode) {
-    setSettings((prev) => (prev ? { ...prev, system_mode: mode } : prev));
+    setSettings((prev) => ({ ...prev, system_mode: mode }));
   }
 
   useEffect(() => {
-    if (!data || !settings || data.timestamp === lastAlertedTimestamp.current) return;
+    if (!data || data.timestamp === lastAlertedTimestamp.current) return;
     lastAlertedTimestamp.current = data.timestamp;
 
     if (data.do < settings.do_danger) {
@@ -78,17 +86,24 @@ export default function DashboardPage() {
     }
   }, [data, settings, showToast, t]);
 
-  const isAutoMode = settings?.system_mode === "auto";
+  const isAutoMode = settings.system_mode === "auto";
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t.dashboard.title}</h1>
         <div className="flex items-center gap-3">
-          {settings && <SystemModeToggle mode={settings.system_mode} onModeChange={handleModeChange} />}
+          <SystemModeToggle mode={settings.system_mode} onModeChange={handleModeChange} />
           <StatusBadge status={status} />
         </div>
       </div>
+
+      {isSettingsOffline && (
+        <div className="flex items-start gap-2 rounded-card border border-warning bg-warning-soft px-4 py-3 text-sm text-warning">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          {t.common.offlineNotice}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <RealtimeCard
@@ -96,7 +111,7 @@ export default function DashboardPage() {
           value={data?.temp}
           unit="°C"
           icon={Thermometer}
-          isDanger={data && settings ? data.temp > settings.temp_max || data.temp < settings.temp_min : false}
+          isDanger={data ? data.temp > settings.temp_max || data.temp < settings.temp_min : false}
           trendPercent={calcTrendPercent(data?.temp, yesterdayAvg?.temp)}
         />
         <RealtimeCard
@@ -104,7 +119,7 @@ export default function DashboardPage() {
           value={data?.ph}
           unit=""
           icon={FlaskConical}
-          isDanger={data && settings ? data.ph > settings.ph_max || data.ph < settings.ph_min : false}
+          isDanger={data ? data.ph > settings.ph_max || data.ph < settings.ph_min : false}
           trendPercent={calcTrendPercent(data?.ph, yesterdayAvg?.ph)}
         />
         <RealtimeCard
@@ -112,7 +127,7 @@ export default function DashboardPage() {
           value={data?.do}
           unit="mg/L"
           icon={Wind}
-          isDanger={data && settings ? data.do < settings.do_danger : false}
+          isDanger={data ? data.do < settings.do_danger : false}
           trendPercent={calcTrendPercent(data?.do, yesterdayAvg?.do)}
         />
         <RealtimeCard
@@ -120,7 +135,7 @@ export default function DashboardPage() {
           value={data?.turbidity}
           unit="NTU"
           icon={Droplet}
-          isDanger={data && settings ? data.turbidity > settings.turbidity_max : false}
+          isDanger={data ? data.turbidity > settings.turbidity_max : false}
           trendPercent={calcTrendPercent(data?.turbidity, yesterdayAvg?.turbidity)}
         />
         <WaterLevelCard isNormal={data?.level} />
@@ -128,20 +143,24 @@ export default function DashboardPage() {
 
       <RealtimeChart data={data} settings={settings} />
 
-      {settings && (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="flex flex-col gap-3 lg:col-span-2">
-            <MetricTabs active={riskMetric} onChange={setRiskMetric} />
-            <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
-          </div>
-          <WeatherWidget location={settings.farm_location} />
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="flex flex-col gap-3 lg:col-span-2">
+          <MetricTabs active={riskMetric} onChange={setRiskMetric} />
+          <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
         </div>
-      )}
+        <WeatherWidget location={settings.farm_location} />
+      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />
         <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={isAutoMode} />
-        <DeviceControl device="pump_out" label={t.dashboard.devicePumpOut} isAutoMode={isAutoMode} isWaterLow={data ? !data.level : false} onBlocked={(msg) => showToast(msg, "warning")} />
+        <DeviceControl
+          device="pump_out"
+          label={t.dashboard.devicePumpOut}
+          isAutoMode={isAutoMode}
+          isWaterLow={data ? !data.level : false}
+          onBlocked={(msg) => showToast(msg, "warning")}
+        />
         <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={isAutoMode} />
       </div>
 

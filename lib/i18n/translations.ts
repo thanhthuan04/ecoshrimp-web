@@ -11,6 +11,7 @@ export const translations = {
         common: {
             loading: "Đang tải...",
             loadError: "Không tải được dữ liệu, thử tải lại trang.",
+            offlineNotice: "Không thể tải cấu hình, đang sử dụng giá trị mặc định.",
         },
         dashboard: {
             title: "Tổng quan ao nuôi",
@@ -122,6 +123,7 @@ export const translations = {
         common: {
             loading: "Loading...",
             loadError: "Failed to load data, please refresh the page.",
+            offlineNotice: "Unable to load settings, using default values.",
         },
         dashboard: {
             title: "Pond Overview",
