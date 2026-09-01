@@ -11,7 +11,7 @@ export const translations = {
         common: {
             loading: "Đang tải...",
             loadError: "Không tải được dữ liệu, thử tải lại trang.",
-            offlineNotice: "Không thể tải cấu hình, đang sử dụng giá trị mặc định.",
+            offlineNotice: "Không kết nối được máy chủ - đang hiển thị giá trị mặc định. Thay đổi sẽ không được lưu cho tới khi có kết nối lại.",
         },
         dashboard: {
             title: "Tổng quan ao nuôi",
@@ -45,6 +45,20 @@ export const translations = {
             },
             riskAutoNote: "Hệ thống đang tự động xử lý (chế độ Tự động đang bật).",
             riskExecute: "Thực thi ngay",
+        },
+        alertCenter: {
+            title: "Cảnh báo gần đây",
+            empty: "Không có cảnh báo nào. Mọi thứ đều ổn.",
+            viewAll: "Xem tất cả",
+            loadMore: "Xem thêm",
+            sentTelegram: "Đã gửi Telegram",
+            typeLabel: {
+                do_low: "DO thấp",
+                temp_out_of_range: "Nhiệt độ bất thường",
+                ph_out_of_range: "pH bất thường",
+                turbidity_high: "Độ đục cao",
+                ai_early_warning: "Cảnh báo sớm AI",
+            },
         },
         history: {
             title: "Lịch sử dữ liệu",
@@ -123,7 +137,7 @@ export const translations = {
         common: {
             loading: "Loading...",
             loadError: "Failed to load data, please refresh the page.",
-            offlineNotice: "Unable to load settings, using default values.",
+            offlineNotice: "Could not reach the server - showing default values. Changes won't be saved until reconnected.",
         },
         dashboard: {
             title: "Pond Overview",
@@ -157,6 +171,20 @@ export const translations = {
             },
             riskAutoNote: "System is handling this automatically (Auto mode is on).",
             riskExecute: "Execute now",
+        },
+        alertCenter: {
+            title: "Recent Alerts",
+            empty: "No alerts. Everything looks good.",
+            viewAll: "View all",
+            loadMore: "Load more",
+            sentTelegram: "Sent to Telegram",
+            typeLabel: {
+                do_low: "Low DO",
+                temp_out_of_range: "Abnormal temperature",
+                ph_out_of_range: "Abnormal pH",
+                turbidity_high: "High turbidity",
+                ai_early_warning: "AI early warning",
+            },
         },
         history: {
             title: "Data History",

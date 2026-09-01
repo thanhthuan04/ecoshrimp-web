@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle, Droplet, FlaskConical, Thermometer, Wind } from "lucide-react";
+import AlertCenter from "@/components/dashboard/AlertCenter";
 import DeviceControl from "@/components/control/DeviceControl";
 import SystemModeToggle from "@/components/control/SystemModeToggle";
 import RealtimeCard from "@/components/dashboard/RealtimeCard";
@@ -147,6 +148,7 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-3 lg:col-span-2">
           <MetricTabs active={riskMetric} onChange={setRiskMetric} />
           <RecommendationCard forecast={data?.forecast} settings={settings} activeMetric={riskMetric} />
+          <AlertCenter />
         </div>
         <WeatherWidget location={settings.farm_location} />
       </div>
