@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AlertTriangle, Bot, Droplets, FlaskConical, Thermometer } from "lucide-react";
+import { SkeletonRow } from "@/components/ui/Skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import type { AlertItem, AlertListResponse, AlertType } from "@/types/alert";
@@ -57,7 +58,13 @@ export default function AlertCenter() {
         <div className="rounded-card bg-surface p-6 shadow-card">
             <h2 className="mb-4 text-sm font-semibold text-text-secondary">{t.alertCenter.title}</h2>
 
-            {isLoading && <p className="py-6 text-center text-sm text-text-secondary">{t.common.loading}</p>}
+            {isLoading && (
+                <div className="flex flex-col gap-2">
+                    <SkeletonRow />
+                    <SkeletonRow />
+                    <SkeletonRow />
+                </div>
+            )}
 
             {!isLoading && alerts.length === 0 && (
                 <p className="py-6 text-center text-sm text-text-muted">{t.alertCenter.empty}</p>

@@ -6,6 +6,7 @@ import AutomationForm from "@/components/settings/AutomationForm";
 import GeneralForm from "@/components/settings/GeneralForm";
 import ThresholdForm from "@/components/settings/ThresholdForm";
 import TimerForm from "@/components/settings/TimerForm";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import { DEFAULT_SETTINGS } from "@/lib/defaultSettings";
@@ -43,7 +44,20 @@ export default function SettingsPage() {
     }
 
     if (isLoading) {
-        return <p className="text-sm text-text-secondary">{t.common.loading}</p>;
+        return (
+            <div className="flex flex-col gap-6">
+                <Skeleton className="h-8 w-48" />
+                {[0, 1, 2, 3].map((i) => (
+                    <div key={i} className="rounded-card bg-surface p-6 shadow-card">
+                        <Skeleton className="mb-4 h-5 w-40" />
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     return (

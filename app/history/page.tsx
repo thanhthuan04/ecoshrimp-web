@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Download } from "lucide-react";
+import { Calendar, Download, Inbox } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import ChartTabs from "@/components/history/ChartTabs";
 import DataTable from "@/components/history/DataTable";
 import MetricTabs from "@/components/history/MetricTabs";
 import StatCards from "@/components/history/StatCards";
+import { SkeletonChart } from "@/components/ui/Skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import { exportHistoryToCsv } from "@/lib/exportCsv";
@@ -25,7 +26,15 @@ export default function HistoryPage() {
     const [date, setDate] = useState<string>(() => new Date().toISOString().slice(0, 10));
     const [points, setPoints] = useState<HistoryPoint[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [farmLocation, setFarmLocation] = useState<string>("");
     const { t } = useLanguage();
+
+    useEffect(() => {
+        apiClient
+            .get<{ farm_location: string }>("/api/settings")
+            .then((res) => setFarmLocation(res.farm_location))
+            .catch(() => setFarmLocation(""));
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
@@ -55,15 +64,20 @@ export default function HistoryPage() {
                             value={date}
                             max={new Date().toISOString().slice(0, 10)}
                             onChange={(e) => setDate(e.target.value)}
-                            className="rounded-lg border border-border bg-surface py-1.5 pl-9 pr-3 text-sm text-text-primary"
+                            className="rounded-lg border border-border bg-surface py-1.5 pl-9 pr-3 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
                         />
                     </div>
                     <ChartTabs active={range} onChange={setRange} />
                     <button
                         type="button"
-                        onClick={() => exportHistoryToCsv(points, `Bao_Cao_EcoShrimp_${date}.csv`)}
+                        onClick={() =>
+                            exportHistoryToCsv(points, `Bao_Cao_EcoShrimp_${date}.csv`, {
+                                farmLocation,
+                                rangeLabel: `${range} (${date})`,
+                            })
+                        }
                         disabled={points.length === 0}
-                        className="flex items-center gap-1.5 rounded-pill border border-border px-3 py-1.5 text-xs font-semibold text-text-secondary disabled:opacity-40"
+                        className="flex items-center gap-1.5 rounded-pill border border-border px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
                     >
                         <Download className="h-3.5 w-3.5" />
                         {t.history.exportCsv}
@@ -79,9 +93,12 @@ export default function HistoryPage() {
                     <MetricTabs active={metric} onChange={setMetric} />
                 </div>
                 {isLoading ? (
-                    <p className="py-16 text-center text-sm text-text-secondary">{t.common.loading}</p>
+                    <SkeletonChart />
                 ) : points.length === 0 ? (
-                    <p className="py-16 text-center text-sm text-text-secondary">{t.history.noData}</p>
+                    <div className="flex flex-col items-center gap-2 py-16 text-center text-text-secondary">
+                        <Inbox className="h-8 w-8 text-text-muted" />
+                        <p className="text-sm">{t.history.noData}</p>
+                    </div>
                 ) : (
                     <ResponsiveContainer width="100%" height={320}>
                         <LineChart data={points}>
