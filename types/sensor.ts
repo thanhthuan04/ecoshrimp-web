@@ -11,6 +11,6 @@ export interface SensorData {
     ph: number;
     do: number;
     turbidity: number;
-    level: number;
+    level: boolean;
     forecast?: ForecastData;
 }

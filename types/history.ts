@@ -1,9 +1,10 @@
 export type HistoryRange = "day" | "week" | "month";
+export type HistoryMetric = "temp" | "ph" | "do" | "turbidity";
 
 export interface HistoryPoint {
     timestamp: string;
-    avg_temp: number;
-    avg_ph: number;
-    avg_do: number;
-    avg_turbidity: number;
+    temp: number;
+    ph: number;
+    do: number;
+    turbidity: number;
 }

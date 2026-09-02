@@ -16,14 +16,19 @@ export class ApiError extends Error {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
     const { auth = false, headers, ...rest } = options;
 
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-        ...rest,
-        headers: {
-            "Content-Type": "application/json",
-            ...(auth ? { "X-API-Key": API_KEY } : {}),
-            ...headers,
-        },
-    });
+    let response: Response;
+    try {
+        response = await fetch(`${API_BASE_URL}${path}`, {
+            ...rest,
+            headers: {
+                "Content-Type": "application/json",
+                ...(auth ? { "X-API-Key": API_KEY } : {}),
+                ...headers,
+            },
+        });
+    } catch {
+        throw new ApiError("Không kết nối được tới server.", 0);
+    }
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({ detail: response.statusText }));

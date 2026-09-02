@@ -1,26 +1,146 @@
 @import "tailwindcss";
 
+/* ============================================
+   EcoShrimp Design System
+   Light + Dark palette - class-based switching qua .dark trên <html>
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbfcfd;
+  --bg-gradient: none;
+  --foreground: #0f172a;
+
+  --c-primary: #16a34a;
+  --c-primary-dark: #166534;
+  --c-primary-light: #059669;
+  --c-primary-soft: #ecfdf5;
+
+  --c-surface: #ffffff;
+  --c-surface-hover: #f8fafc;
+  --c-surface-subtle: #f1f5f9;
+  --c-surface-muted: #f1f5f9;
+
+  --c-text-primary: #17211b;
+  --c-text-secondary: #4a5c51;
+  --c-text-muted: #7b8e83;
+
+  --c-border: rgba(0, 0, 0, 0.05);
+
+  --c-success: #16a34a;
+  --c-success-soft: rgba(236, 253, 245, 0.8);
+  --c-warning: #f59e0b;
+  --c-warning-soft: rgba(255, 251, 235, 0.8);
+  --c-danger: #ef4444;
+  --c-danger-soft: rgba(254, 242, 242, 0.8);
+  --c-info: #3b82f6;
+  --c-info-soft: rgba(239, 246, 255, 0.8);
+
+  --c-shadow-card: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+  --c-shadow-card-hover: 0 8px 30px 0 rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --background: #0b120e;
+  --bg-gradient: linear-gradient(135deg, #0b120e 0%, #15221c 100%);
+  --foreground: #e7ede9;
+
+  --c-primary: #22c55e;
+  --c-primary-dark: #86efac;
+  --c-primary-light: #4ade80;
+  --c-primary-soft: rgba(18, 51, 33, 0.7);
+
+  --c-surface: rgba(16, 25, 21, 0.75);
+  --c-surface-hover: rgba(16, 25, 21, 0.9);
+  --c-surface-subtle: rgba(16, 25, 21, 0.4);
+  --c-surface-muted: rgba(30, 41, 35, 0.8);
+
+  --c-text-primary: #e7ede9;
+  --c-text-secondary: #a7b8ae;
+  --c-text-muted: #7a8d82;
+
+  --c-border: rgba(255, 255, 255, 0.05);
+
+  --c-success: #22c55e;
+  --c-success-soft: rgba(18, 51, 33, 0.7);
+  --c-warning: #fbbf24;
+  --c-warning-soft: rgba(44, 36, 16, 0.7);
+  --c-danger: #f87171;
+  --c-danger-soft: rgba(44, 22, 22, 0.7);
+  --c-info: #60a5fa;
+  --c-info-soft: rgba(20, 35, 56, 0.7);
+
+  --c-shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --c-shadow-card-hover: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-be-vietnam-pro);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-primary-light: var(--c-primary-light);
+  --color-primary-soft: var(--c-primary-soft);
+
+  --color-surface: var(--c-surface);
+  --color-surface-hover: var(--c-surface-hover);
+  --color-surface-subtle: var(--c-surface-subtle);
+  --color-surface-muted: var(--c-surface-muted);
+
+  --color-text-primary: var(--c-text-primary);
+  --color-text-secondary: var(--c-text-secondary);
+  --color-text-muted: var(--c-text-muted);
+
+  --color-border: var(--c-border);
+
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+  --color-warning: var(--c-warning);
+  --color-warning-soft: var(--c-warning-soft);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-info: var(--c-info);
+  --color-info-soft: var(--c-info-soft);
+
+  --radius-card: 0.75rem;
+  --radius-pill: 999px;
+
+  --shadow-card: var(--c-shadow-card);
+  --shadow-card-hover: var(--c-shadow-card-hover);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease, color 0.2s ease;
 }
+
+
+
+button,
+a,
+input,
+select {
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+@keyframes skeleton-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+@keyframes slide-up-fade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-slide-up-fade { animation: slide-up-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
