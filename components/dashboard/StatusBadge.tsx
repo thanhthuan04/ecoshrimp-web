@@ -1,18 +1,31 @@
+"use client";
+
+import { Loader2, Wifi, WifiOff } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { ConnectionStatus } from "@/hooks/useWebSocket";
 
-const STATUS_CONFIG: Record<ConnectionStatus, { label: string; className: string }> = {
-    online: { label: "Đang kết nối", className: "bg-emerald-100 text-emerald-700" },
-    connecting: { label: "Đang kết nối lại...", className: "bg-amber-100 text-amber-700" },
-    offline: { label: "Mất kết nối", className: "bg-red-100 text-red-700" },
+const STATUS_STYLE: Record<ConnectionStatus, string> = {
+    online: "bg-success-soft text-success",
+    connecting: "bg-warning-soft text-warning",
+    offline: "bg-danger-soft text-danger",
+};
+
+const STATUS_ICON: Record<ConnectionStatus, typeof Wifi> = {
+    online: Wifi,
+    connecting: Loader2,
+    offline: WifiOff,
 };
 
 export default function StatusBadge({ status }: { status: ConnectionStatus }) {
-    const config = STATUS_CONFIG[status];
+    const { t } = useLanguage();
+    const Icon = STATUS_ICON[status];
 
     return (
-        <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${config.className}`}>
-            <span className="h-2 w-2 rounded-full bg-current" />
-            {config.label}
+        <span
+            className={`inline-flex items-center gap-2 rounded-pill px-3 py-1 text-xs font-semibold ${STATUS_STYLE[status]}`}
+        >
+            <Icon className={`h-3.5 w-3.5 ${status === "connecting" ? "animate-spin" : ""}`} />
+            {t.status[status]}
         </span>
     );
 }

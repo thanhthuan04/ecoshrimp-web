@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
+import { Be_Vietnam_Pro } from "next/font/google";
+import AppShell from "@/components/layout/AppShell";
+import { LanguageProvider } from "@/hooks/useLanguage";
+import { ThemeProvider } from "@/hooks/useTheme";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-be-vietnam-pro",
 });
 
 export const metadata: Metadata = {
@@ -18,14 +17,29 @@ export const metadata: Metadata = {
   description: "Hệ thống giám sát và điều khiển ao nuôi tôm realtime",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+const THEME_INIT_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem('ecoshrimp-theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = stored || (prefersDark ? 'dark' : 'light');
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+  } catch (e) {}
+})();
+`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-screen bg-slate-50 text-slate-900">
-        <Navbar />
-        <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+    <html lang="vi" className={beVietnamPro.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="min-h-screen bg-background font-sans text-text-primary antialiased">
+        <LanguageProvider>
+          <ThemeProvider>
+            <AppShell>{children}</AppShell>
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
