@@ -7,6 +7,8 @@ import ChartTabs from "@/components/history/ChartTabs";
 import DataTable from "@/components/history/DataTable";
 import MetricTabs from "@/components/history/MetricTabs";
 import StatCards from "@/components/history/StatCards";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { SkeletonChart } from "@/components/ui/Skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
@@ -58,18 +60,20 @@ export default function HistoryPage() {
                 <h1 className="text-2xl font-bold text-text-primary">{t.history.title}</h1>
                 <div className="flex flex-wrap items-center gap-3">
                     <div className="relative">
-                        <Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
-                        <input
+                        <Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted z-10" />
+                        <Input
                             type="date"
                             value={date}
                             max={new Date().toISOString().slice(0, 10)}
                             onChange={(e) => setDate(e.target.value)}
-                            className="rounded-lg border border-border bg-surface py-1.5 pl-9 pr-3 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="pl-9 h-9"
                         />
                     </div>
                     <ChartTabs active={range} onChange={setRange} />
-                    <button
+                    <Button
                         type="button"
+                        variant="secondary"
+                        size="sm"
                         onClick={() =>
                             exportHistoryToCsv(points, `Bao_Cao_EcoShrimp_${date}.csv`, {
                                 farmLocation,
@@ -77,11 +81,10 @@ export default function HistoryPage() {
                             })
                         }
                         disabled={points.length === 0}
-                        className="flex items-center gap-1.5 rounded-pill border border-border px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
                     >
-                        <Download className="h-3.5 w-3.5" />
+                        <Download className="h-4 w-4 mr-1.5" />
                         {t.history.exportCsv}
-                    </button>
+                    </Button>
                 </div>
             </div>
 

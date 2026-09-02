@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/hooks/useLanguage";
 import type { HistoryMetric } from "@/types/history";
+import { Button } from "@/components/ui/Button";
 
 interface MetricTabsProps {
     active: HistoryMetric;
@@ -21,15 +22,16 @@ export default function MetricTabs({ active, onChange }: MetricTabsProps) {
     return (
         <div className="flex gap-1 overflow-x-auto rounded-pill border border-border bg-surface-muted p-1">
             {metrics.map((metric) => (
-                <button
+                <Button
                     key={metric.key}
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onChange(metric.key)}
-                    className={`whitespace-nowrap rounded-pill px-3 py-1.5 text-xs font-bold transition ${active === metric.key ? "bg-surface text-primary shadow-card" : "text-text-secondary"
-                        }`}
+                    className={`whitespace-nowrap rounded-pill h-8 transition flex-1 ${active === metric.key ? "bg-surface text-primary shadow-card hover:bg-surface hover:text-primary" : "text-text-secondary"}`}
                 >
                     {metric.label}
-                </button>
+                </Button>
             ))}
         </div>
     );

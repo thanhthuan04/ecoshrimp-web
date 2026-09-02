@@ -1,4 +1,5 @@
 import { ArrowDown, ArrowUp, type LucideIcon } from "lucide-react";
+import { Card } from "@/components/ui/Card";
 
 interface RealtimeCardProps {
     label: string;
@@ -7,6 +8,7 @@ interface RealtimeCardProps {
     icon: LucideIcon;
     isDanger?: boolean;
     trendPercent?: number | null;
+    themeColor?: "primary" | "info" | "warning" | "success" | "muted";
 }
 
 export default function RealtimeCard({
@@ -16,20 +18,27 @@ export default function RealtimeCard({
     icon: Icon,
     isDanger = false,
     trendPercent,
+    themeColor = "primary"
 }: RealtimeCardProps) {
     const hasTrend = trendPercent !== null && trendPercent !== undefined && Number.isFinite(trendPercent);
     const isUp = hasTrend && trendPercent! > 0;
     const isDown = hasTrend && trendPercent! < 0;
 
+    const THEME_STYLES = {
+        primary: "bg-primary-soft text-primary-dark",
+        info: "bg-info-soft text-info",
+        warning: "bg-warning-soft text-warning",
+        success: "bg-success-soft text-success",
+        muted: "bg-surface-muted text-text-secondary",
+    };
+
     return (
-        <div
-            className={`rounded-card bg-surface p-5 shadow-card transition-shadow hover:shadow-card-hover ${isDanger ? "ring-2 ring-danger" : ""
-                }`}
+        <Card
+            className={`p-5 transition-shadow hover:shadow-card-hover ${isDanger ? "ring-2 ring-danger" : ""}`}
         >
             <div className="flex items-center justify-between">
                 <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDanger ? "bg-danger-soft text-danger" : "bg-primary-soft text-primary-dark"
-                        }`}
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDanger ? "bg-danger-soft text-danger" : THEME_STYLES[themeColor]}`}
                 >
                     <Icon className="h-5 w-5" />
                 </span>
@@ -51,6 +60,6 @@ export default function RealtimeCard({
                 {value !== undefined ? value.toFixed(2) : "--"}
                 <span className="ml-1 text-base font-normal text-text-muted">{unit}</span>
             </p>
-        </div>
+        </Card>
     );
 }

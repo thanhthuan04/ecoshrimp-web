@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/useLanguage";
 import type { HistoryPoint } from "@/types/history";
+import { Card } from "@/components/ui/Card";
 
 interface StatCardsProps {
     points: HistoryPoint[];
@@ -13,10 +14,10 @@ export default function StatCards({ points }: StatCardsProps) {
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 {[t.history.statAvgDo, t.history.statMaxTemp, t.history.statPhRange, t.history.statMaxTurbidity].map(
                     (label) => (
-                        <div key={label} className="rounded-card bg-surface p-5 text-center shadow-card">
+                        <Card key={label} className="p-5 text-center">
                             <p className="text-xs font-semibold uppercase tracking-wide text-text-secondary">{label}</p>
                             <p className="mt-2 text-2xl font-extrabold text-text-muted">--</p>
-                        </div>
+                        </Card>
                     )
                 )}
             </div>
@@ -39,10 +40,10 @@ export default function StatCards({ points }: StatCardsProps) {
     return (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {stats.map((stat) => (
-                <div key={stat.label} className="rounded-card bg-surface p-5 text-center shadow-card">
+                <Card key={stat.label} className="p-5 text-center">
                     <p className="text-xs font-semibold uppercase tracking-wide text-text-secondary">{stat.label}</p>
                     <p className={`mt-2 text-2xl font-extrabold ${stat.color}`}>{stat.value}</p>
-                </div>
+                </Card>
             ))}
         </div>
     );

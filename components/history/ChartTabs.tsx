@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/hooks/useLanguage";
 import type { HistoryRange } from "@/types/history";
+import { Button } from "@/components/ui/Button";
 
 interface ChartTabsProps {
     active: HistoryRange;
@@ -20,15 +21,16 @@ export default function ChartTabs({ active, onChange }: ChartTabsProps) {
     return (
         <div className="flex gap-2 rounded-pill bg-surface-muted p-1">
             {tabs.map((tab) => (
-                <button
+                <Button
                     key={tab.key}
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onChange(tab.key)}
-                    className={`rounded-pill px-4 py-1.5 text-sm font-semibold transition ${active === tab.key ? "bg-surface text-primary shadow-card" : "text-text-secondary"
-                        }`}
+                    className={`rounded-pill px-4 h-8 transition ${active === tab.key ? "bg-surface text-primary shadow-card hover:bg-surface hover:text-primary" : "text-text-secondary"}`}
                 >
                     {tab.label}
-                </button>
+                </Button>
             ))}
         </div>
     );

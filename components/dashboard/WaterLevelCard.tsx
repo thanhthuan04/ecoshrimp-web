@@ -2,6 +2,7 @@
 
 import { Waves } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Card } from "@/components/ui/Card";
 
 interface WaterLevelCardProps {
     isNormal: boolean | undefined;
@@ -13,15 +14,15 @@ export default function WaterLevelCard({ isNormal }: WaterLevelCardProps) {
     const isDanger = isNormal === false;
 
     return (
-        <div className={`rounded-card bg-surface p-5 shadow-card transition-shadow hover:shadow-card-hover ${isDanger ? "ring-2 ring-danger" : ""}`}>
+        <Card className={`p-5 transition-shadow hover:shadow-card-hover ${isDanger ? "ring-2 ring-danger" : ""}`}>
             <span
-                className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDanger ? "bg-danger-soft text-danger" : "bg-primary-soft text-primary-dark"
+                className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDanger ? "bg-danger-soft text-danger" : "bg-info-soft text-info"
                     }`}
             >
                 <Waves className="h-5 w-5" />
             </span>
             <p className="mt-3 text-sm font-medium text-text-secondary">{t.dashboard.waterLevel}</p>
             <p className={`mt-1 text-2xl font-extrabold ${isDanger ? "text-danger" : "text-text-primary"}`}>{statusText}</p>
-        </div>
+        </Card>
     );
 }

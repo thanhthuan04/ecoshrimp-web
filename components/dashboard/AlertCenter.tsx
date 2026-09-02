@@ -6,6 +6,8 @@ import { SkeletonRow } from "@/components/ui/Skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
 import type { AlertItem, AlertListResponse, AlertType } from "@/types/alert";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
 const PAGE_SIZE = 5;
 
@@ -55,7 +57,7 @@ export default function AlertCenter() {
     }
 
     return (
-        <div className="rounded-card bg-surface p-6 shadow-card">
+        <Card className="p-6">
             <h2 className="mb-4 text-sm font-semibold text-text-secondary">{t.alertCenter.title}</h2>
 
             {isLoading && (
@@ -94,16 +96,17 @@ export default function AlertCenter() {
                     </ul>
 
                     {alerts.length < total && (
-                        <button
+                        <Button
                             type="button"
+                            variant="secondary"
                             onClick={loadMore}
-                            className="mt-4 w-full rounded-pill border border-border py-2 text-xs font-semibold text-text-secondary hover:bg-surface-muted"
+                            className="mt-4 w-full rounded-pill border border-border"
                         >
                             {t.alertCenter.loadMore}
-                        </button>
+                        </Button>
                     )}
                 </>
             )}
-        </div>
+        </Card>
     );
 }

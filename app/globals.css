@@ -6,8 +6,9 @@
    ============================================ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #17211b;
+  --background: #fbfcfd;
+  --bg-gradient: none;
+  --foreground: #0f172a;
 
   --c-primary: #16a34a;
   --c-primary-dark: #166534;
@@ -15,58 +16,61 @@
   --c-primary-soft: #ecfdf5;
 
   --c-surface: #ffffff;
-  --c-surface-subtle: #f8faf9;
-  --c-surface-muted: #f5f7f6;
+  --c-surface-hover: #f8fafc;
+  --c-surface-subtle: #f1f5f9;
+  --c-surface-muted: #f1f5f9;
 
   --c-text-primary: #17211b;
-  --c-text-secondary: #66736b;
-  --c-text-muted: #98a39d;
+  --c-text-secondary: #4a5c51;
+  --c-text-muted: #7b8e83;
 
-  --c-border: rgba(0, 0, 0, 0.06);
+  --c-border: rgba(0, 0, 0, 0.05);
 
   --c-success: #16a34a;
-  --c-success-soft: #ecfdf5;
+  --c-success-soft: rgba(236, 253, 245, 0.8);
   --c-warning: #f59e0b;
-  --c-warning-soft: #fffbeb;
+  --c-warning-soft: rgba(255, 251, 235, 0.8);
   --c-danger: #ef4444;
-  --c-danger-soft: #fef2f2;
+  --c-danger-soft: rgba(254, 242, 242, 0.8);
   --c-info: #3b82f6;
-  --c-info-soft: #eff6ff;
+  --c-info-soft: rgba(239, 246, 255, 0.8);
 
-  --c-shadow-card: 0 1px 2px rgba(23, 33, 27, 0.04), 0 4px 12px rgba(23, 33, 27, 0.04);
-  --c-shadow-card-hover: 0 2px 4px rgba(23, 33, 27, 0.06), 0 8px 24px rgba(23, 33, 27, 0.08);
+  --c-shadow-card: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+  --c-shadow-card-hover: 0 8px 30px 0 rgba(0, 0, 0, 0.08);
 }
 
 .dark {
   --background: #0b120e;
+  --bg-gradient: linear-gradient(135deg, #0b120e 0%, #15221c 100%);
   --foreground: #e7ede9;
 
   --c-primary: #22c55e;
   --c-primary-dark: #86efac;
   --c-primary-light: #4ade80;
-  --c-primary-soft: #123321;
+  --c-primary-soft: rgba(18, 51, 33, 0.7);
 
-  --c-surface: #101915;
-  --c-surface-subtle: #0b120e;
-  --c-surface-muted: #17221c;
+  --c-surface: rgba(16, 25, 21, 0.75);
+  --c-surface-hover: rgba(16, 25, 21, 0.9);
+  --c-surface-subtle: rgba(16, 25, 21, 0.4);
+  --c-surface-muted: rgba(30, 41, 35, 0.8);
 
   --c-text-primary: #e7ede9;
-  --c-text-secondary: #9fb0a6;
-  --c-text-muted: #6c7d73;
+  --c-text-secondary: #a7b8ae;
+  --c-text-muted: #7a8d82;
 
-  --c-border: rgba(255, 255, 255, 0.08);
+  --c-border: rgba(255, 255, 255, 0.05);
 
   --c-success: #22c55e;
-  --c-success-soft: #123321;
+  --c-success-soft: rgba(18, 51, 33, 0.7);
   --c-warning: #fbbf24;
-  --c-warning-soft: #2c2410;
+  --c-warning-soft: rgba(44, 36, 16, 0.7);
   --c-danger: #f87171;
-  --c-danger-soft: #2c1616;
+  --c-danger-soft: rgba(44, 22, 22, 0.7);
   --c-info: #60a5fa;
-  --c-info-soft: #142338;
+  --c-info-soft: rgba(20, 35, 56, 0.7);
 
-  --c-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.4);
-  --c-shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.5), 0 10px 28px rgba(0, 0, 0, 0.5);
+  --c-shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --c-shadow-card-hover: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
@@ -80,6 +84,7 @@
   --color-primary-soft: var(--c-primary-soft);
 
   --color-surface: var(--c-surface);
+  --color-surface-hover: var(--c-surface-hover);
   --color-surface-subtle: var(--c-surface-subtle);
   --color-surface-muted: var(--c-surface-muted);
 
@@ -98,7 +103,7 @@
   --color-info: var(--c-info);
   --color-info-soft: var(--c-info-soft);
 
-  --radius-card: 1rem;
+  --radius-card: 0.75rem;
   --radius-pill: 999px;
 
   --shadow-card: var(--c-shadow-card);
@@ -106,16 +111,13 @@
 }
 
 body {
-  background: var(--color-surface-subtle);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--color-text-primary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+
 
 button,
 a,
@@ -140,3 +142,5 @@ select {
 .animate-skeleton {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
+@keyframes slide-up-fade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-slide-up-fade { animation: slide-up-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }

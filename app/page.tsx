@@ -114,6 +114,7 @@ export default function DashboardPage() {
           icon={Thermometer}
           isDanger={data ? data.temp > settings.temp_max || data.temp < settings.temp_min : false}
           trendPercent={calcTrendPercent(data?.temp, yesterdayAvg?.temp)}
+          themeColor="warning"
         />
         <RealtimeCard
           label={t.dashboard.ph}
@@ -122,6 +123,7 @@ export default function DashboardPage() {
           icon={FlaskConical}
           isDanger={data ? data.ph > settings.ph_max || data.ph < settings.ph_min : false}
           trendPercent={calcTrendPercent(data?.ph, yesterdayAvg?.ph)}
+          themeColor="success"
         />
         <RealtimeCard
           label={t.dashboard.do}
@@ -130,6 +132,7 @@ export default function DashboardPage() {
           icon={Wind}
           isDanger={data ? data.do < settings.do_danger : false}
           trendPercent={calcTrendPercent(data?.do, yesterdayAvg?.do)}
+          themeColor="info"
         />
         <RealtimeCard
           label={t.dashboard.turbidity}
@@ -138,11 +141,31 @@ export default function DashboardPage() {
           icon={Droplet}
           isDanger={data ? data.turbidity > settings.turbidity_max : false}
           trendPercent={calcTrendPercent(data?.turbidity, yesterdayAvg?.turbidity)}
+          themeColor="muted"
         />
         <WaterLevelCard isNormal={data?.level} />
       </div>
 
-      <RealtimeChart data={data} settings={settings} />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+            <RealtimeChart data={data} settings={settings} />
+        </div>
+        <div className="flex flex-col gap-4">
+            <h3 className="font-bold text-lg text-text-primary px-1">Bảng Điều Khiển</h3>
+            <div className="grid grid-cols-2 gap-4 flex-1">
+                <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={isAutoMode} />
+                <DeviceControl
+                  device="pump_out"
+                  label={t.dashboard.devicePumpOut}
+                  isAutoMode={isAutoMode}
+                  isWaterLow={data ? !data.level : false}
+                  onBlocked={(msg) => showToast(msg, "warning")}
+                />
+                <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={isAutoMode} />
+                <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />
+            </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="flex flex-col gap-3 lg:col-span-2">
@@ -151,19 +174,6 @@ export default function DashboardPage() {
           <AlertCenter />
         </div>
         <WeatherWidget location={settings.farm_location} />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <DeviceControl device="aerator" label={t.dashboard.deviceAerator} isAutoMode={isAutoMode} />
-        <DeviceControl device="pump_in" label={t.dashboard.devicePumpIn} isAutoMode={isAutoMode} />
-        <DeviceControl
-          device="pump_out"
-          label={t.dashboard.devicePumpOut}
-          isAutoMode={isAutoMode}
-          isWaterLow={data ? !data.level : false}
-          onBlocked={(msg) => showToast(msg, "warning")}
-        />
-        <DeviceControl device="light" label={t.dashboard.deviceLight} isAutoMode={isAutoMode} />
       </div>
 
       <Toast toasts={toasts} />

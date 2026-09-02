@@ -3,6 +3,7 @@
 import RiskGauge from "@/components/dashboard/RiskGauge";
 import { useLanguage } from "@/hooks/useLanguage";
 import { apiClient } from "@/lib/apiClient";
+import { Button } from "@/components/ui/Button";
 import { calcLowerBoundRisk, calcRangeRisk } from "@/lib/riskCalculator";
 import type { ForecastData } from "@/types/sensor";
 import type { HistoryMetric } from "@/types/history";
@@ -78,13 +79,14 @@ export default function RecommendationCard({ forecast, settings, activeMetric }:
                 )}
 
                 {canExecute && (
-                    <button
+                    <Button
                         type="button"
                         onClick={handleExecute}
-                        className="mt-3 rounded-pill bg-primary px-4 py-1.5 text-xs font-semibold text-white"
+                        size="sm"
+                        className="mt-3 rounded-pill"
                     >
                         {t.dashboard.riskExecute}
-                    </button>
+                    </Button>
                 )}
             </div>
         </div>
